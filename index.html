@@ -1,0 +1,157 @@
+<!DOCTYPE html>  
+<html lang="pl">  
+<head>  
+   <meta charset="UTF-8">  
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+   <title>SklejkaMaker</title>  
+   <link rel="stylesheet" href="style.css">  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>  
+</head>  
+<body>  
+   <div class="controls">  
+      <div class="control-group">  
+        <button class="btn active" data-shape="circle">Koło</button>  
+        <button class="btn" data-shape="square">Kwadrat</button>
+        <button class="btn" data-shape="sklejka">Sklejka</button>  
+        <button class="btn" data-shape="skos">Sklejka Skos</button>
+      </div>  
+  
+      <div class="control-group">  
+        <label>Kolor ramki:</label>  
+        <input type="color" id="borderColor" value="#FFFFFF">  
+        <div class="color-presets">  
+           <button class="color-btn" data-color="#FFFFFF" style="background: #FFFFFF; border: 1px solid #ccc;"></button>  
+           <button class="color-btn" data-color="#FF0000" style="background: #FF0000;"></button>  
+           <button class="color-btn" data-color="#000000" style="background: #000000;"></button>  
+           <button class="color-btn" data-color="#0066FF" style="background: #0066FF;"></button>  
+        </div>  
+      </div>  
+  
+      <div class="control-group">  
+        <label>Grubość ramki:</label>  
+        <input type="range" id="borderWidth" min="1" max="50" value="6">  
+        <input type="number" id="borderWidthInput" value="7" min="1" max="20"> px  
+      </div>  
+
+      <div class="control-group">  
+        <label>Obrót nakładki:</label>  
+        <input type="range" id="rotationAngle" min="0" max="360" value="0">  
+        <input type="number" id="rotationAngleInput" value="0" min="0" max="360"> stopni  
+      </div>  
+  
+      <div class="control-group">  
+        <label>Wielkość nakładki:</label>  
+        <input type="range" id="overlaySize" min="90" max="450" value="200">  
+        <input type="number" id="overlaySizeInput" value="200" min="90" max="450"> px  
+      </div>  
+  
+      <div class="control-group">  
+        <label>  
+           <input type="checkbox" id="shadowToggle">  
+           Cień pod nakładką  
+        </label>  
+      </div>  
+   </div>  
+  
+   <div class="control-group">  
+      <label>Zdjęcie główne:</label>  
+      <input type="file" id="mainImageInput" accept="image/*">
+      <input type="text" id="mainImageLink" placeholder="lub wklej link">  
+      <button id="autoFitBtn" class="btn">Autodopasowanie zdjęcia</button>  
+   </div>  
+  
+   <div class="control-group">  
+      <label>Zdjęcie nakładki:</label>  
+      <input type="file" id="overlayImageInput" accept="image/*">
+      <input type="text" id="overlayImageLink" placeholder="lub wklej link">  
+   </div>
+
+   <div class="control-group">
+      <label>Biblioteka nakładek:</label>
+      <select id="overlayLibrary">
+          <option value="custom">Wskazane wyżej</option>
+          <option value="kolo1.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/kolo1.png">kolo1.png</option>
+          <option value="kolo2.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/kolo2.png">kolo2.png</option>
+          <option value="strzalka1.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/strzalka1.png">strzalka1.png</option>
+          <option value="strzalka2.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/strzalka2.png">strzalka2.png</option>
+          <option value="naoczy1.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/naoczy1.png">naoczy1.png</option>
+          <option value="naoczy2.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/naoczy2.png">naoczy2.png</option>
+          <option value="pixelator.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/pixelator.png">pixelator.png</option>
+          <option value="zakresl.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/zakresl.png">zakresl.png</option>
+      </select>
+   </div>
+   
+   <div class="control-group">  
+      <label>Powiększ zdjęcie główne:</label>  
+      <input type="range" id="mainImageScale" min="100" max="300" value="100">  
+      <span>100%</span>  
+   </div>  
+
+   <div class="control-group">  
+      <label>Powiększ zdjęcie nakładki:</label>  
+      <input type="range" id="overlayImageScale" min="100" max="300" value="100">  
+      <span>100%</span>  
+   </div>  
+  
+   <div class="navigation-controls">  
+      <div class="nav-control">  
+        <span>Kadruj zdjęcie główne</span>  
+        <div class="nav-arrows" id="mainImageNav">  
+           <button class="arrow up">↑</button>  
+           <button class="arrow right">→</button>  
+           <button class="arrow down">↓</button>  
+           <button class="arrow left">←</button>  
+        </div>  
+      </div>  
+  
+      <div class="nav-control">  
+        <span>Kadruj zdjęcie nakładki</span>  
+        <div class="nav-arrows" id="overlayImageNav">  
+           <button class="arrow up">↑</button>  
+           <button class="arrow right">→</button>  
+           <button class="arrow down">↓</button>  
+           <button class="arrow left">←</button>  
+        </div>  
+      </div>  
+   </div>  
+
+   <div id="editorContainer">  
+      <div id="mainImageContainer">  
+        <img id="mainImage" alt="Główne zdjęcie">  
+      </div>  
+      <div id="shadow"></div>  
+      <div id="overlayContainer" class="circle">  
+        <img id="overlayImage" alt="Nakładka" style="aspect-ratio: 1/1;">  
+      </div>  
+   </div>  
+  
+   <div class="save-options">  
+      <button id="saveAsBtn" class="btn">Zapisz (plik się pobierze)...</button>  
+      <button id="copyToClipboardBtn" class="btn">Skopiuj do schowka</button>
+   </div>  
+
+   <div class="control-group">
+      <label>Szablony:</label>
+      <select id="templateSelect" style="padding: 5px; min-width: 200px;">
+          <option value="default">Możesz wskazać zapisany przez siebie szablon</option>
+      </select>
+      <button id="loadTemplateBtn" class="btn">Wczytaj</button>
+      <button id="deleteTemplateBtn" class="btn">Usuń wybrany szablon</button>
+   </div>
+
+   <div class="control-group">
+      <label>Nazwa nowego szablonu:</label>
+      <input type="text" id="newTemplateName" placeholder="Wpisz nazwę szablonu" style="padding: 5px; min-width: 200px;">
+      <button id="saveTemplateBtn" class="btn">Zapisz bieżącą wielkość, pozycję i kolor nakładki jako szablon</button>
+   </div>
+
+   <div style="text-align: right; font-size: 12px; color: #666; margin-top: 12px; font-family: Arial, sans-serif;">
+    SklejkaMaker by Robert VER 1.99
+    <br>Dodano obsługę sklejki skośnej, usunięto artefakt przy nakładce
+    <br>
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Faiidiot.github.io%2Fnakladka&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visits&edge_flat=false"/>
+   </div>
+   
+   <script src="script.js"></script>  
+</body>  
+</html>
