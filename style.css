@@ -129,19 +129,16 @@ input[type="text"] {
 #shadow.skos {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.66);
-  filter: blur(20px); /* Większe rozmycie */
+  filter: blur(15px); /* Większe rozmycie */
   transform-origin: top left;
   
   /* Clip-path lekko rozszerzone, aby wyeliminować ostre krawędzie */
-  clip-path: polygon(-20px -20px, 90% -20px, 120% 120%, -20px 120%);
-  -webkit-clip-path: polygon(-20px -20px, 90% -20px, 120% 120%, -20px 120%);
+  clip-path: polygon(-10px -10px, 90% -10px, 120% 120%, -10px 120%);
+  -webkit-clip-path: polygon(-10px -10px, 90% -10px, 120% 120%, -10px 120%);
 
-  /* Brak transformacji przesunięcia */
-  transform: none;
-  
   /* Wydłużony margines dla efektu rozmycia */
-  padding: 20px;
-  margin: -20px;
+  padding: 15px;
+  margin: -15px;
 
   z-index: 5;
   pointer-events: none;
@@ -165,49 +162,4 @@ input[type="text"] {
    max-height: 100%;  
    position: absolute;  
    top: 50%;  
-   left: 50%;  
-   transform: translate(-50%, -50%);  
-}  
-  
-#overlayContainer {  
-   position: absolute;  
-   top: 50px;  
-   left: 50px;  
-   width: 150px;  
-   height: 150px;  
-   border: 7px solid white;  
-   cursor: move;  
-   z-index: 10;  
-   overflow: hidden;  
-}  
-  
-.circle {  
-   border-radius: 50%;  
-}  
-
-#overlayContainer.sklejka {
-    width: 50% !important;
-    height: 100% !important;
-    top: 0 !important;
-    right: 0 !important;
-    left: auto !important;
-    border-radius: 0 !important;
-}
-
-#overlayContainer.skos {
-    border-radius: 0;
-    width: 50% !important;
-    height: 100% !important;
-    top: 0 !important;
-    left: 0 !important;
-    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
-}
-
-#overlayImage {  
-    width: 100%;  
-    height: 100%;  
-    object-fit: cover;  
-    transform-origin: center center;
-    position: relative;
-}
+   left: 50%; 
