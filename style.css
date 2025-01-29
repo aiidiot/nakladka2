@@ -129,8 +129,11 @@ input[type="text"] {
 #shadow.skos {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.66);
-    filter: blur(30px);
- 
+    filter: blur(20px);
+    transform-origin: top left;
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    
 }
 
 
