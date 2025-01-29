@@ -224,3 +224,37 @@ input[type="number"] {
     z-index: 5;
     pointer-events: none;
 }
+
+.multi-sklejka-container {
+    display: grid;
+    gap: 2px;
+    background-color: #f8f9fa;
+    width: 1024px;
+    height: 654px;
+}
+
+.sklejka3-container {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.sklejka4-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.section-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: white;
+}
+
+.section-image img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
+}
