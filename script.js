@@ -188,10 +188,13 @@ shapeButtons.forEach(button => {
         this.classList.add('active');
         const shape = this.dataset.shape;
         
-        // Elementy UI
-        const standardControls = document.querySelectorAll('.standard-controls');
-        const overlayContainer = document.getElementById('overlayContainer');
-        const editorContainer = document.getElementById('editorContainer');
+       // Na początku pliku, gdzie są inne deklaracje elementów
+const standardControls = document.querySelectorAll([
+    '.control-group:not(.multi-sklejka-controls)',
+    '.navigation-controls',
+    '#overlayContainer',
+    '#shadowToggle'
+].join(', '));
         
         // Reset wszystkich kontenerów
         editorContainer.className = '';
