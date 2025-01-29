@@ -127,8 +127,7 @@ input[type="text"] {
 }  
 
 #shadow.skos {
-   position: absolute;
-    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    position: absolute;
 }
 
 #shadow.skos::before {
@@ -142,6 +141,11 @@ input[type="text"] {
     filter: blur(10px);
     -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
     clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+}
+
+
+#shadow.sklejka {
+    border-radius: 0 !important;
 }
 
 #mainImage {  
