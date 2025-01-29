@@ -126,9 +126,7 @@ input[type="text"] {
     pointer-events: none;
 }  
 
-#shadow.skos {
-    position: absolute;
-}
+
 
 #shadow.skos::before {
     content: '';
