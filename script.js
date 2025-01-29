@@ -53,7 +53,11 @@ function updateShadow() {
     } else if (overlayContainer.classList.contains('skos')) {
         shadow.classList.add('skos');
         shadow.classList.remove('sklejka');
-        shadow.style.transform = 'skew(-10deg)';
+        // Używamy tego samego clip-path co dla nakładki
+        shadow.style.clipPath = 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)';
+        shadow.style.webkitClipPath = 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)';
+        // Usuwamy transform skew, który powodował odbicie
+        shadow.style.transform = overlayContainer.style.transform;
         shadow.style.transformOrigin = 'top left';
     } else {
         shadow.classList.remove('sklejka', 'skos');
