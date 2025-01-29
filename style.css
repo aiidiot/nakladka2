@@ -131,16 +131,10 @@ input[type="text"] {
     background-color: rgba(0, 0, 0, 0.66);
     filter: blur(10px);
     transform-origin: top left;
-    /* Zwiększamy clipPath aby cień wystawał poza krawędzie */
-    clip-path: polygon(-10px -10px, 90% -10px, 105% 105%, -10px 105%);
-    -webkit-clip-path: polygon(-10px -10px, 90% -10px, 105% 105%, -10px 105%);
-    /* Dodajemy padding dla efektu wystającego cienia */
-    padding: 10px;
-    /* Upewniamy się, że cień jest większy niż nakładka */
-    width: calc(100% + 20px) !important;
-    height: calc(100% + 20px) !important;
-    /* Przesuwamy cień delikatnie aby efekt był widoczny */
-    transform: translate(3px, 3px);
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    /* Możemy spróbować zwiększyć wartość blur */
+    filter: blur(15px);
 }
 
 
