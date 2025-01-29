@@ -120,11 +120,10 @@ input[type="text"] {
   
 #shadow {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.66);
-    filter: blur(10px);
-    z-index: 5;  /* Warstwa środkowa */
+    z-index: 5;
     pointer-events: none;
-}  
+}
+
 #shadow.skos {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.66);
@@ -140,6 +139,14 @@ input[type="text"] {
 
 #shadow.sklejka {
     border-radius: 0 !important;
+    background-color: rgba(0, 0, 0, 0.66);
+    filter: blur(10px);
+}
+
+#shadow.circle {
+    background-color: rgba(0, 0, 0, 0.66);
+    filter: blur(10px);
+    border-radius: 50%;
 }
 
 #mainImage {  
