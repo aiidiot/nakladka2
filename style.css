@@ -129,15 +129,19 @@ input[type="text"] {
 #shadow.skos {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.66);
-    filter: blur(15px);
+    filter: blur(10px);
     transform-origin: top left;
-    clip-path: polygon(-5px -5px, 90% -5px, 105% 105%, -5px 105%);
-    -webkit-clip-path: polygon(-5px -5px, 90% -5px, 105% 105%, -5px 105%);
-    /* Delikatnie zwiększamy rozmiar cienia */
-    width: calc(100% + 10px);
-    height: calc(100% + 10px);
-    /* Delikatne przesunięcie */
-    transform: translate(3px, 3px);
+    /* Delikatniejsze powiększenie clipPath */
+    clip-path: polygon(-2px -2px, 87% -2px, 102% 102%, -2px 102%);
+    -webkit-clip-path: polygon(-2px -2px, 87% -2px, 102% 102%, -2px 102%);
+    /* Minimalne przesunięcie */
+    transform: translate(1px, 1px);
+    /* Upewniamy się, że cień jest widoczny */
+    z-index: 5;
+    pointer-events: none;
+    /* Dodajemy padding dla lepszego efektu rozmycia */
+    padding: 2px;
+    margin: -2px;
 }
 
 
