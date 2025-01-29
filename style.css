@@ -1,6 +1,204 @@
+body {  
+   font-family: Arial, sans-serif;  
+   max-width: 1200px;  
+   margin: 0 auto;  
+   padding: 20px;  
+   background-color: white;  
+}  
+  
+.controls {  
+   background: #f5f5f5;  
+   padding: 15px;  
+   border-radius: 5px;  
+   margin-bottom: 20px;  
+}  
+  
+.control-group {  
+   margin-bottom: 15px;  
+   display: flex;  
+   align-items: center;  
+   gap: 10px;  
+}  
+  
+.color-presets {  
+   display: flex;  
+   gap: 5px;  
+}  
+  
+.color-btn {  
+   width: 30px;  
+   height: 30px;  
+   border: none;  
+   border-radius: 4px;  
+   cursor: pointer;  
+   padding: 0;  
+}  
+  
+.navigation-controls {  
+   display: flex;  
+   gap: 40px;  
+   margin: 20px 0;  
+   padding: 15px;  
+   background: #f5f5f5;  
+   border-radius: 5px;  
+}  
+  
+.nav-control {  
+   display: flex;  
+   flex-direction: column;  
+   align-items: center;  
+   gap: 5px;  
+}  
+  
+.nav-label {  
+   font-size: 12px;  
+   color: #666;  
+}  
+  
+.btn {  
+   padding: 8px 16px;  
+   margin-right: 5px;  
+   cursor: pointer;  
+   border: none;
+   background: #0078D4;  
+   color: white;  
+   border-radius: 4px;  
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+   transition: all 0.2s ease;
+}  
+  
+.btn.active {  
+   background: #005A9E;
+   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}  
+
+.btn:hover {
+    background: #106EBE;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+  
+#editorContainer {  
+   width: 1024px;  
+   height: 654px;  
+   border: 0.5px dashed rgba(0, 0, 0, 0.08);
+   position: relative;  
+   overflow: hidden;  
+   background: #f8f9fa;  
+}  
+  
+#mainImageContainer {  
+   width: 100%;  
+   height: 100%;  
+   position: relative;  
+   overflow: hidden;  
+   z-index: 1;
+}  
+  
+#mainImage {  
+   max-width: 100%;  
+   max-height: 100%;  
+   position: absolute;  
+   top: 50%;  
+   left: 50%;  
+   transform: translate(-50%, -50%);  
+}  
+  
+#overlayContainer {  
+   position: absolute;  
+   top: 50px;  
+   left: 50px;  
+   width: 150px;  
+   height: 150px;  
+   border: 7px solid white;  
+   cursor: move;  
+   z-index: 10;  
+   overflow: hidden;   
+}  
+  
+.circle {  
+   border-radius: 50%;  
+}  
+
+#overlayContainer.sklejka {
+    width: 50% !important;
+    height: 100% !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    border-radius: 0 !important;
+}
+
+#overlayContainer.skos {
+    border-radius: 0;
+    width: 50% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+}
+  
+#overlayImage {  
+   width: 100%;  
+   height: 100%;  
+   object-fit: cover;  
+   transform-origin: center center;
+}  
+  
+.nav-arrows {  
+   position: relative;  
+   width: 100px;  
+   height: 100px;  
+}  
+  
+.arrow {  
+   position: absolute;  
+   width: 30px;  
+   height: 30px;  
+   background: white;  
+   border: 2px solid #007bff;  
+   border-radius: 50%;  
+   display: flex;  
+   align-items: center;  
+   justify-content: center;  
+   cursor: pointer;  
+   font-size: 18px;  
+}  
+  
+.arrow:hover {  
+   background: #007bff;  
+   color: white;  
+}  
+  
+.arrow.up { top: 0; left: 35px; }  
+.arrow.right { right: 0; top: 35px; }  
+.arrow.down { bottom: 0; left: 35px; }  
+.arrow.left { left: 0; top: 35px; }  
+  
+input[type="range"] {  
+   width: 200px;  
+}  
+  
+input[type="number"] {  
+   width: 70px;  
+   padding: 5px;  
+}  
+  
 #shadow {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.66);
+    filter: blur(10px);
+    z-index: 5;
+    pointer-events: none;
+}
+
+#shadow.sklejka {
+    background-color: rgba(0, 0, 0, 0.5); /* Wydłużenie cienia */
     filter: blur(10px);
     z-index: 5;
     pointer-events: none;
@@ -15,13 +213,6 @@
     clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
     -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
     
-    z-index: 5;
-    pointer-events: none;
-}
-
-#shadow.sklejka {
-    background-color: rgba(0, 0, 0, 0.5); /* Wydłużenie cienia */
-    filter: blur(10px);
     z-index: 5;
     pointer-events: none;
 }
