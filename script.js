@@ -231,23 +231,41 @@ function setTranslate(xPos, yPos, el) {
         updateOverlaySize(overlaySizeNumberInput.value);
     });
 
-    // Obsługa obrotu
-    const rotationAngleInput = document.getElementById('rotationAngle');
-    const rotationAngleNumberInput = document.getElementById('rotationAngleInput');
+   // Obsługa obrotu
+const rotationAngleInput = document.getElementById('rotationAngle');
+const rotationAngleNumberInput = document.getElementById('rotationAngleInput');
+const rotateLeft = document.getElementById('rotateLeft');
+const rotateRight = document.getElementById('rotateRight');
 
-    function updateRotation(value) {
-        overlayImage.style.transform = `rotate(${value}deg)`;
-        rotationAngleInput.value = value;
-        rotationAngleNumberInput.value = value;
-    }
+function updateRotation(value) {
+    overlayImage.style.transform = `rotate(${value}deg)`;
+    rotationAngleInput.value = value;
+    rotationAngleNumberInput.value = value;
+}
 
-    rotationAngleInput.addEventListener('input', () => {
-        updateRotation(rotationAngleInput.value);
-    });
+// Funkcja do aktualizacji obrotu o zadany kąt
+function rotateBy(degrees) {
+    const currentRotation = parseInt(rotationAngleInput.value) || 0;
+    let newRotation = currentRotation + degrees;
+    
+    // Zapewnienie że wartość jest w zakresie 0-360
+    newRotation = ((newRotation % 360) + 360) % 360;
+    
+    // Aktualizacja interfejsu i obrotu
+    updateRotation(newRotation);
+}
 
-    rotationAngleNumberInput.addEventListener('input', () => {
-        updateRotation(rotationAngleNumberInput.value);
-    });
+rotationAngleInput.addEventListener('input', () => {
+    updateRotation(rotationAngleInput.value);
+});
+
+rotationAngleNumberInput.addEventListener('input', () => {
+    updateRotation(rotationAngleNumberInput.value);
+});
+
+// Obsługa przycisków obrotu
+rotateLeft.addEventListener('click', () => rotateBy(-22.5));
+rotateRight.addEventListener('click', () => rotateBy(22.5));
 
     // Obsługa cienia
     shadowToggle.addEventListener('change', () => {
