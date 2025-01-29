@@ -261,8 +261,8 @@ rotationAngleNumberInput.addEventListener('input', () => {
 });
 
 // Obsługa przycisków obrotu
-rotateLeft.addEventListener('click', () => rotateBy(-22.5));
-rotateRight.addEventListener('click', () => rotateBy(22.5));
+rotateLeft.addEventListener('click', () => rotateBy(-10));
+rotateRight.addEventListener('click', () => rotateBy(10));
 
     // Obsługa cienia
     shadowToggle.addEventListener('change', () => {
