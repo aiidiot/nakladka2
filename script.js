@@ -182,19 +182,141 @@ function setTranslate(xPos, yPos, el) {
     });
 
     // Obsługa kształtów
-    shapeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            shapeButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
+shapeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        shapeButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        const shape = this.dataset.shape;
+        
+        // Elementy UI
+        const standardControls = document.querySelectorAll('.standard-controls');
+        const overlayContainer = document.getElementById('overlayContainer');
+        const editorContainer = document.getElementById('editorContainer');
+        
+        // Reset wszystkich kontenerów
+        editorContainer.className = '';
+        
+        if (shape === 'sklejka3' || shape === 'sklejka4') {
+            // Ukryj standardowe kontrolki
+            standardControls.forEach(control => control.style.display = 'none');
+            overlayContainer.style.display = 'none';
+            shadow.style.display = 'none';
             
-            const shape = this.dataset.shape;
+            // Przygotuj container na multi-sklejkę
+            editorContainer.className = 'multi-sklejka-container ' + shape + '-container';
+            
+            // Utwórz sekcje
+            const sectionsCount = shape === 'sklejka3' ? 3 : 4;
+            editorContainer.innerHTML = Array(sectionsCount)
+                .fill()
+                .map((_, i) => `
+                    <div class="section-image" id="section${i+1}">
+                        <img src="" alt="Sekcja ${i+1}">
+                    </div>
+                `).join('');
+                
+            // Pokaż kontrolki dla multi-sklejki
+            createMultiSklejkaControls(sectionsCount);
+            
+        } else {
+            // Przywróć standardowy widok
+            standardControls.forEach(control => control.style.display = 'flex');
+            overlayContainer.style.display = 'block';
             overlayContainer.className = shape;
-            if (shadow.style.display === 'block') {
+            if (shadowToggle.checked) {
+                shadow.style.display = 'block';
                 shadow.className = shape;
                 updateShadow();
             }
-        });
+        }
     });
+});
+
+// Funkcja tworząca kontrolki dla multi-sklejki
+function createMultiSklejkaControls(sectionsCount) {
+    const controlsContainer = document.createElement('div');
+    controlsContainer.className = 'multi-sklejka-controls';
+    
+    for (let i = 1; i <= sectionsCount; i++) {
+        const sectionControls = `
+            <div class="control-group">
+                <label>Zdjęcie ${i}:</label>
+                <input type="file" id="section${i}Input" accept="image/*">
+                <input type="text" id="section${i}Link" placeholder="lub wklej link">
+            </div>
+            <div class="control-group">
+                <label>Powiększ zdjęcie ${i}:</label>
+                <input type="range" id="section${i}Scale" min="100" max="300" value="100">
+                <span>100%</span>
+            </div>
+            <div class="navigation-controls">
+                <div class="nav-control">
+                    <span>Kadruj zdjęcie ${i}</span>
+                    <div class="nav-arrows" id="section${i}Nav">
+                        <button class="arrow up">↑</button>
+                        <button class="arrow right">→</button>
+                        <button class="arrow down">↓</button>
+                        <button class="arrow left">←</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section-controls';
+        sectionDiv.innerHTML = sectionControls;
+        controlsContainer.appendChild(sectionDiv);
+        
+        // Dodaj obsługę zdarzeń dla tej sekcji
+        setupSectionControls(i);
+    }
+    
+    // Wstaw kontrolki przed editorContainer
+    const editorContainer = document.getElementById('editorContainer');
+    editorContainer.parentNode.insertBefore(controlsContainer, editorContainer);
+}
+
+// Funkcja konfigurująca kontrolki dla każdej sekcji
+function setupSectionControls(sectionIndex) {
+    const sectionImg = document.querySelector(`#section${sectionIndex} img`);
+    const fileInput = document.getElementById(`section${sectionIndex}Input`);
+    const linkInput = document.getElementById(`section${sectionIndex}Link`);
+    const scaleInput = document.getElementById(`section${sectionIndex}Scale`);
+    
+    // Obsługa wczytywania pliku
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                sectionImg.src = e.target.result;
+            };
+            reader.readAsDataURL(e.target.files[0]);
+            linkInput.value = '';
+        }
+    });
+    
+    // Obsługa linku
+    linkInput.addEventListener('input', function() {
+        if (this.value.trim()) {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function() {
+                sectionImg.src = this.src;
+            };
+            img.src = this.value.trim();
+        }
+    });
+    
+    // Obsługa skalowania
+    scaleInput.addEventListener('input', function() {
+        const scale = this.value / 100;
+        sectionImg.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        this.nextElementSibling.textContent = `${this.value}%`;
+    });
+    
+    // Konfiguracja nawigacji
+    setupNavigation(`section${sectionIndex}Nav`, sectionImg);
+}
 
     // Obsługa grubości ramki
     const borderWidthInput = document.getElementById('borderWidth');
