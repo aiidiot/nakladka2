@@ -33,6 +33,7 @@ function initializeShadow() {
     shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.66)';
     shadow.style.filter = 'blur(10px)';
     shadow.style.display = 'block'; // Domyślnie włączony
+    shadow.className = overlayContainer.className; // Dodaj to
     updateShadow();
     shadowToggle.checked = true; // Zaznacz checkbox
 }
@@ -50,24 +51,23 @@ function updateShadow() {
     if (overlayContainer.classList.contains('sklejka')) {
         shadow.classList.add('sklejka');
         shadow.classList.remove('skos');
-   } else if (overlayContainer.classList.contains('skos')) {
-    shadow.classList.add('skos');
-    shadow.classList.remove('sklejka');
-    
-    // Kopiujemy dokładnie te same transformacje co ma nakładka
-    const overlayTransform = getComputedStyle(overlayContainer).transform;
-    shadow.style.transform = overlayTransform;
-    
-    // Upewniamy się, że wymiary i pozycja są prawidłowe
-    const rect = overlayContainer.getBoundingClientRect();
-    shadow.style.width = rect.width + 'px';
-    shadow.style.height = rect.height + 'px';
-    shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
-    shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
-}
-} else {
-    shadow.classList.remove('sklejka', 'skos');
-}
+    } else if (overlayContainer.classList.contains('skos')) {
+        shadow.classList.add('skos');
+        shadow.classList.remove('sklejka');
+        
+        // Kopiujemy dokładnie te same transformacje co ma nakładka
+        const overlayTransform = getComputedStyle(overlayContainer).transform;
+        shadow.style.transform = overlayTransform;
+        
+        // Upewniamy się, że wymiary i pozycja są prawidłowe
+        const rect = overlayContainer.getBoundingClientRect();
+        shadow.style.width = rect.width + 'px';
+        shadow.style.height = rect.height + 'px';
+        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
+    } else {
+        shadow.classList.remove('sklejka', 'skos');
+    }
 }
 
     // Funkcja do ustawiania stylów obrazu nakładki
