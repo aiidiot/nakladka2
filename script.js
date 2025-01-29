@@ -50,12 +50,21 @@ function updateShadow() {
     if (overlayContainer.classList.contains('sklejka')) {
         shadow.classList.add('sklejka');
         shadow.classList.remove('skos');
-    } else if (overlayContainer.classList.contains('skos')) {
+   } else if (overlayContainer.classList.contains('skos')) {
     shadow.classList.add('skos');
     shadow.classList.remove('sklejka');
-    // Synchronizujemy transformacje z nakładką
-    shadow.style.transform = overlayContainer.style.transform;
-    shadow.style.transformOrigin = 'top left';
+    
+    // Kopiujemy dokładnie te same transformacje co ma nakładka
+    const overlayTransform = getComputedStyle(overlayContainer).transform;
+    shadow.style.transform = overlayTransform;
+    
+    // Upewniamy się, że wymiary i pozycja są prawidłowe
+    const rect = overlayContainer.getBoundingClientRect();
+    shadow.style.width = rect.width + 'px';
+    shadow.style.height = rect.height + 'px';
+    shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+    shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
+}
 } else {
     shadow.classList.remove('sklejka', 'skos');
 }
