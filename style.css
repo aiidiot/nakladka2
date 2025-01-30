@@ -135,12 +135,16 @@ body {
 
 /* Aktualizacja dla overlayContainer i skos */
 #overlayContainer.skos {
-     width: 50% !important;
+    position: absolute;
+    border-radius: 0;
+    width: 50% !important;
     height: 100% !important;
     top: 0 !important;
-    right: 0 !important;
-    left: auto !important;
-    border-radius: 0 !important;
+    left: 0 !important;
+    display: block !important;
+    visibility: visible !important;
+    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
 }
 
 
