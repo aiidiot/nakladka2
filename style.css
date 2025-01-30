@@ -139,10 +139,9 @@ body {
     width: 50% !important;
     height: 100% !important;
     top: 0 !important;
-    left: 50% !important; /* Zmiana z right na left */
+    left: 0 !important;
     -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-    position: absolute;
 }
 
   
@@ -217,8 +216,13 @@ input[type="number"] {
 
 #shadow.skos {
     position: absolute;
+    width: 100px;
+    height: 120%;
     background-color: rgba(0, 0, 0, 0.4);
     filter: blur(20px);
+    left: 50%;
+    top: -10%;
+    transform: translateX(-50%) rotate(15deg);
     z-index: 5;
     pointer-events: none;
 }
