@@ -563,9 +563,7 @@ function loadSavedTemplates() {
 document.addEventListener('DOMContentLoaded', () => {
     // ... (istniejący kod)
     
-    // Inicjalizacja szablonów
-    loadSavedTemplates();
-});
+
 
     // Setup nawigacji
     function setupNavigation(navId, targetImage) {
@@ -598,4 +596,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicjalizacja początkowa
     initializeShadow();
+
+        // Inicjalizacja szablonów
+    loadSavedTemplates();
+});
 });
