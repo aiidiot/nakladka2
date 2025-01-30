@@ -76,60 +76,59 @@ document.addEventListener('DOMContentLoaded', () => {
         shadow.style.zIndex = '5';
     }
  }  
-// Obsługa kształtu nakładki  
-document.querySelectorAll('[data-shape]').forEach(btn => {  
-   btn.addEventListener('click', function() {
-      // Usuń active ze wszystkich przycisków
-      document.querySelectorAll('[data-shape]').forEach(b => b.classList.remove('active'));
-      // Dodaj active do klikniętego przycisku
-      this.classList.add('active');
-      
-      const shape = this.dataset.shape;  
-      console.log('Wybrany kształt:', shape);
-      
-      // Reset wszystkich transformacji i klas
-      overlayContainer.classList.remove('circle', 'square', 'sklejka', 'skos');
-      overlayContainer.style.transform = 'none';
-      shadow.style.transform = 'none';
-      overlayImage.style.transform = 'none';
-      
-      const currentRotation = rotationAngleInput.value || '0'; // Używamy aktualnej wartości obrotu
-      
-      if (shape === 'circle') {  
-        overlayContainer.classList.add('circle');  
-        shadow.style.borderRadius = '50%';
-        overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
-      } else if (shape === 'square') {  
-        overlayContainer.classList.add('square');  
-        shadow.style.borderRadius = '0';
-        overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
-      } else if (shape === 'sklejka') {
-        overlayContainer.classList.add('sklejka');
-        overlayContainer.style.width = '50%';
-        overlayContainer.style.height = '100%';
-        overlayContainer.style.left = '0';
-        overlayContainer.style.top = '0';
-        overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
-      } else if (shape === 'skos') {
-        overlayContainer.classList.add('skos');
-        shadow.style.borderRadius = '0';
-        overlayContainer.style.width = '50%';
-        overlayContainer.style.height = '100%';
-        overlayContainer.style.top = '0';
-        overlayContainer.style.left = '0';
-        overlayImage.style.transform = 'none';  // Reset transformacji zdjęcia
-      }
-      updateShadow();
-   });  
-});
-      
-      // Sprawdzamy końcowy stan
-      console.log('Końcowy stan overlayContainer:', {
-          display: overlayContainer.style.display,
-          visibility: overlayContainer.style.visibility,
-          classes: overlayContainer.className
-      });
-   });  
+ // Obsługa kształtu nakładki
+    document.querySelectorAll('[data-shape]').forEach(btn => {  
+        btn.addEventListener('click', function() {
+            // Usuń active ze wszystkich przycisków
+            document.querySelectorAll('[data-shape]').forEach(b => b.classList.remove('active'));
+            // Dodaj active do klikniętego przycisku
+            this.classList.add('active');
+            
+            const shape = this.dataset.shape;  
+            console.log('Wybrany kształt:', shape);
+            
+            // Reset wszystkich transformacji i klas
+            overlayContainer.classList.remove('circle', 'square', 'sklejka', 'skos');
+            overlayContainer.style.transform = 'none';
+            shadow.style.transform = 'none';
+            overlayImage.style.transform = 'none';
+            
+            const currentRotation = rotationAngleInput.value || '0'; // Używamy aktualnej wartości obrotu
+            
+            if (shape === 'circle') {  
+                overlayContainer.classList.add('circle');  
+                shadow.style.borderRadius = '50%';
+                overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
+            } else if (shape === 'square') {  
+                overlayContainer.classList.add('square');  
+                shadow.style.borderRadius = '0';
+                overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
+            } else if (shape === 'sklejka') {
+                overlayContainer.classList.add('sklejka');
+                overlayContainer.style.width = '50%';
+                overlayContainer.style.height = '100%';
+                overlayContainer.style.left = '0';
+                overlayContainer.style.top = '0';
+                overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
+            } else if (shape === 'skos') {
+                overlayContainer.classList.add('skos');
+                shadow.style.borderRadius = '0';
+                overlayContainer.style.width = '50%';
+                overlayContainer.style.height = '100%';
+                overlayContainer.style.top = '0';
+                overlayContainer.style.left = '0';
+                overlayImage.style.transform = 'none';  // Reset transformacji zdjęcia
+            }
+            updateShadow();
+        });  
+    });
+
+    // Sprawdzamy końcowy stan
+    console.log('Końcowy stan overlayContainer:', {
+        display: overlayContainer.style.display,
+        visibility: overlayContainer.style.visibility,
+        classes: overlayContainer.className
+    });
 });
 
     // Przeciąganie nakładki
