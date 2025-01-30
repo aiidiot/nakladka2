@@ -1,4 +1,4 @@
-// Główne zmienne
+ // Główne zmienne
 let isDragging = false;
 let currentX;
 let currentY;
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorPresets = document.querySelectorAll('.color-btn');
     const shapeButtons = document.querySelectorAll('.btn[data-shape]');
     const shadowToggle = document.getElementById('shadowToggle');
-    const overlayImageScale = document.getElementById('overlayImageScale'); // Zdefiniowana zmienna
 
     // Funkcja inicjalizacji cienia - zawsze włączony
     function initializeShadow() {
@@ -41,29 +40,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funkcja aktualizacji cienia
     function updateShadow() {
         const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth);
-
-        shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
-        shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
-        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
-        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
-        shadow.className = overlayContainer.className;
-
+        
         if (overlayContainer.classList.contains('sklejka')) {
+            // Logika dla sklejki
+            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+            shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+            shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
             shadow.classList.add('sklejka');
             shadow.classList.remove('skos');
-        } else if (overlayContainer.classList.contains('skos')) {
+        } 
+        else if (overlayContainer.classList.contains('skos')) {
+            // Pozycjonowanie cienia dla skosu - dokładnie na granicy podziału
             shadow.classList.add('skos');
             shadow.classList.remove('sklejka');
-
-            // Specjalna obsługa cienia dla skosu
             shadow.style.width = '100px';
             shadow.style.height = '120%';
-            shadow.style.left = '50%';
-            shadow.style.transform = 'translateX(-50%) rotate(15deg)';
+            shadow.style.left = '50%'; // Ustawiamy na środku
+            shadow.style.transform = 'translateX(-50%) rotate(15deg)'; // Centrujemy i obracamy
             shadow.style.top = '-10%';
             shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
             shadow.style.filter = 'blur(20px)';
-        } else {
+        } 
+        else {
+            // Standardowa logika dla pozostałych kształtów
+            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+            shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+            shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
             shadow.classList.remove('sklejka', 'skos');
         }
 
@@ -71,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         overlayContainer.style.zIndex = '6';
         shadow.style.zIndex = '5';
     }
-
     // Funkcja do ustawiania stylów obrazu nakładki
     function setupOverlayImage(imgElement) {
         // Czekamy na załadowanie obrazu
@@ -84,12 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Obliczamy skalę, aby obraz zmieścił się w całości
             const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight);
-
+            
             imgElement.style.width = '100%';
             imgElement.style.height = '100%';
             imgElement.style.objectFit = 'contain'; // Zmiana z 'cover' na 'contain'
             imgElement.style.position = 'relative';
-
+            
             // Ustawiamy skalę w kontrolce
             if (overlayImageScale) {
                 overlayImageScale.value = Math.round(scale * 100);
@@ -144,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setTranslate(xPos, yPos, el) {
         const currentRotation = rotationAngleInput.value || '0';
-
+        
         if (el === overlayContainer) {
             el.style.transform = `translate(${xPos}px, ${yPos}px) rotate(${currentRotation}deg)`;
             if (shadow.style.display === 'block') {
@@ -161,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
     overlayContainer.addEventListener('mousedown', dragStart, false);
     document.addEventListener('mousemove', drag, false);
     document.addEventListener('mouseup', dragEnd, false);
-
     // Obsługa zdjęć
     mainImageInput.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
@@ -205,10 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', function() {
             shapeButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
-
+            
             const shape = this.dataset.shape;
             overlayContainer.className = shape;
-
+            
             if (shape === 'skos') {
                 // Specjalne ustawienia dla skosu
                 overlayContainer.style.display = 'block';
@@ -220,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlayImage.classList.remove('skos');
                 document.getElementById('editorContainer').classList.remove('skos');
             }
-
+            
             if (shadow.style.display === 'block') {
                 shadow.className = shape;
                 updateShadow();
@@ -246,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
     borderWidthNumberInput.addEventListener('input', () => {
         updateBorderWidth(borderWidthNumberInput.value);
     });
-
     // Obsługa rozmiaru
     const overlaySizeInput = document.getElementById('overlaySize');
     const overlaySizeNumberInput = document.getElementById('overlaySizeInput');
@@ -284,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Apply both rotation and translation to overlayContainer
         overlayContainer.style.transform = `translate(${translateX}, ${translateY}) rotate(${value}deg)`;
-
+        
         // Update shadow rotation
         if (shadow.style.display === 'block') {
             const shadowTranslateMatch = shadow.style.transform.match(/translate\(([-\d.]+px),\s*([-\d.]+px)\)/);
@@ -292,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const shadowTranslateY = shadowTranslateMatch ? shadowTranslateMatch[2] : '0px';
             shadow.style.transform = `translate(${shadowTranslateX}, ${shadowTranslateY}) rotate(${value}deg)`;
         }
-
+        
         // Update input values
         rotationAngleInput.value = value;
         rotationAngleNumberInput.value = value;
@@ -315,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rotateLeft.addEventListener('click', () => rotateBy(-10));
     rotateRight.addEventListener('click', () => rotateBy(10));
-
     // Obsługa cienia
     shadowToggle.addEventListener('change', () => {
         if (shadowToggle.checked) {
@@ -329,6 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Obsługa skalowania
     const mainImageScale = document.getElementById('mainImageScale');
+    const overlayImageScale = document.getElementById('overlayImageScale');
 
     mainImageScale.addEventListener('input', function() {
         const scale = this.value / 100;
@@ -350,9 +351,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const containerHeight = mainImage.parentElement.offsetHeight;
         const imgWidth = mainImage.naturalWidth;
         const imgHeight = mainImage.naturalHeight;
-
+        
         const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight);
-
+        
         mainImageScale.value = Math.round(scale * 100);
         mainImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
         mainImageScale.nextElementSibling.textContent = `${Math.round(scale * 100)}%`;
@@ -366,9 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
             img.onload = function() {
                 mainImage.src = this.src;
             };
-            img.onerror = function() {
-                alert('Nie można załadować obrazu z podanego URL.');
-            };
             img.src = this.value.trim();
         }
     });
@@ -381,14 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlayImage.src = this.src;
                 setupOverlayImage(overlayImage);
             };
-            img.onerror = function() {
-                alert('Nie można załadować obrazu z podanego URL.');
-            };
             img.src = this.value.trim();
             overlayLibrary.value = 'custom';
         }
     });
-
     // Obsługa biblioteki nakładek
     overlayLibrary.addEventListener('change', function() {
         if (this.value !== 'custom') {
@@ -399,9 +393,6 @@ document.addEventListener('DOMContentLoaded', () => {
             img.onload = function() {
                 overlayImage.src = this.src;
                 setupOverlayImage(overlayImage);
-            };
-            img.onerror = function() {
-                alert('Nie można załadować obrazu z biblioteki.');
             };
             img.src = overlayUrl;
             overlayImageInput.value = '';
@@ -441,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadSavedTemplates() {
         const select = document.getElementById('templateSelect');
         select.innerHTML = '<option value="default">Możesz wskazać zapisany przez siebie szablon</option>';
-
+        
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key.startsWith('template_')) {
@@ -467,7 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
             overlayScale: overlayImageScale.value
         };
     }
-
     // Funkcja aplikująca zapisane ustawienia
     function applySettings(settings) {
         // Przywracanie kształtu
@@ -481,4 +471,114 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Przywracanie ramki
-        overlayContainer.style.borderWidth = settings.borderWidth
+        overlayContainer.style.borderWidth = settings.borderWidth;
+        overlayContainer.style.borderColor = settings.borderColor;
+        borderColorInput.value = settings.borderColor;
+        borderWidthInput.value = parseInt(settings.borderWidth);
+        borderWidthNumberInput.value = parseInt(settings.borderWidth);
+
+        // Przywracanie pozycji
+        xOffset = settings.position.x;
+        yOffset = settings.position.y;
+        setTranslate(xOffset, yOffset, overlayContainer);
+
+        // Przywracanie obrotu
+        updateRotation(settings.rotation);
+        
+        // Przywracanie skali
+        overlayImageScale.value = settings.overlayScale;
+        const scale = settings.overlayScale / 100;
+        overlayImage.style.transform = `rotate(${settings.rotation}deg) scale(${scale})`;
+
+        // Aktualizacja cienia
+        updateShadow();
+    }
+
+    // Event Listenery dla szablonów
+    document.getElementById('loadTemplateBtn').addEventListener('click', function() {
+        const templateName = document.getElementById('templateSelect').value;
+        if (templateName === 'default') {
+            alert('Wybierz szablon do wczytania');
+            return;
+        }
+        
+        const template = localStorage.getItem('template_' + templateName);
+        if (template) {
+            applySettings(JSON.parse(template));
+        } else {
+            alert('Nie znaleziono szablonu');
+        }
+    });
+
+    document.getElementById('saveTemplateBtn').addEventListener('click', function() {
+        const newTemplateName = document.getElementById('newTemplateName').value.trim();
+        if (!newTemplateName) {
+            alert('Wprowadź nazwę szablonu');
+            return;
+        }
+        
+        const settings = getCurrentSettings();
+        localStorage.setItem('template_' + newTemplateName, JSON.stringify(settings));
+        
+        // Dodawanie nowej opcji do selecta
+        const select = document.getElementById('templateSelect');
+        const exists = Array.from(select.options).some(option => option.value === newTemplateName);
+        
+        if (!exists) {
+            const option = new Option(newTemplateName, newTemplateName);
+            select.add(option);
+        }
+        
+        document.getElementById('newTemplateName').value = '';
+        alert('Szablon został zapisany');
+    });
+
+    document.getElementById('deleteTemplateBtn').addEventListener('click', function() {
+        const select = document.getElementById('templateSelect');
+        const templateName = select.value;
+        
+        if (templateName === 'default') {
+            alert('Wybierz szablon do usunięcia');
+            return;
+        }
+        
+        if (confirm(`Czy na pewno chcesz usunąć szablon "${templateName}"?`)) {
+            localStorage.removeItem('template_' + templateName);
+            select.remove(select.selectedIndex);
+            alert('Szablon został usunięty');
+        }
+    });
+
+    // Setup nawigacji
+    function setupNavigation(navId, targetImage) {
+        const nav = document.getElementById(navId);
+        const step = 10;
+        
+        nav.querySelector('.up').addEventListener('click', () => {
+            const currentTop = parseInt(getComputedStyle(targetImage).top) || 0;
+            targetImage.style.top = `${currentTop - step}px`;
+        });
+        
+        nav.querySelector('.down').addEventListener('click', () => {
+            const currentTop = parseInt(getComputedStyle(targetImage).top) || 0;
+            targetImage.style.top = `${currentTop + step}px`;
+        });
+        
+        nav.querySelector('.left').addEventListener('click', () => {
+            const currentLeft = parseInt(getComputedStyle(targetImage).left) || 0;
+            targetImage.style.left = `${currentLeft - step}px`;
+        });
+        
+        nav.querySelector('.right').addEventListener('click', () => {
+            const currentLeft = parseInt(getComputedStyle(targetImage).left) || 0;
+            targetImage.style.left = `${currentLeft + step}px`;
+        });
+    }
+
+    setupNavigation('mainImageNav', mainImage);
+    setupNavigation('overlayImageNav', overlayImage);
+
+    // Inicjalizacja początkowa
+    initializeShadow();
+    loadSavedTemplates();
+});
