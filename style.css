@@ -228,9 +228,11 @@ input[type="number"] {
     
     z-index: 5;
     pointer-events: none;
-       filter: blur(20px); /* Zwiększamy rozmycie */
-
 }
+
+/* Dodaj overflow: hidden do elementu nadrzędnego */
+.parent-element {
+    overflow: hidden;
 
 #shadow.circle {
     background-color: rgba(0, 0, 0, 0.5);
