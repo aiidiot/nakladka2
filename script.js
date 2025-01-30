@@ -84,14 +84,15 @@ document.querySelectorAll('[data-shape]').forEach(btn => {
       this.classList.add('active');
       
       const shape = this.dataset.shape;  
+      console.log('Wybrany kształt:', shape);
+      
       // Reset wszystkich transformacji i klas
       overlayContainer.classList.remove('circle', 'square', 'sklejka', 'skos');
       overlayContainer.style.transform = 'none';
       shadow.style.transform = 'none';
       overlayImage.style.transform = 'none';
       
-      // Dodajemy zmienną dla rotacji
-      const currentRotation = document.getElementById('rotationAngle').value || '0';
+      const currentRotation = rotationAngleInput.value || '0'; // Używamy aktualnej wartości obrotu
       
       if (shape === 'circle') {  
         overlayContainer.classList.add('circle');  
@@ -120,7 +121,6 @@ document.querySelectorAll('[data-shape]').forEach(btn => {
       updateShadow();
    });  
 });
- 
       
       // Sprawdzamy końcowy stan
       console.log('Końcowy stan overlayContainer:', {
