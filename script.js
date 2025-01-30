@@ -88,10 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Obliczamy skalę, aby obraz zmieścił się w całości
             const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight);
             
-            imgElement.style.width = '100%';
-            imgElement.style.height = '100%';
-            imgElement.style.objectFit = 'contain'; // Zmiana z 'cover' na 'contain'
-            imgElement.style.position = 'relative';
+           imgElement.style.width = '100%';
+imgElement.style.height = '100%';
+imgElement.style.objectFit = 'contain'; // Zmiana z 'cover' na 'contain'
+imgElement.style.position = 'absolute';
+imgElement.style.top = '0';
+imgElement.style.left = '0';
+imgElement.style.bottom = '0';
+imgElement.style.right = '0'
             
             // Ustawiamy skalę w kontrolce
             if (overlayImageScale) {
