@@ -215,15 +215,16 @@ input[type="number"] {
 
 #shadow.skos {
     position: absolute;
-    width: 100px;
+    width: 80px;          /* Zmniejszona szerokość */
     height: 120%;
-    background-color: rgba(0, 0, 0, 0.4);
-    filter: blur(20px);
-    left: 50%;
+    background-color: rgba(0, 0, 0, 0.5);  /* Zwiększona nieprzezroczystość */
+    filter: blur(15px);   /* Zmniejszone rozmycie */
+    left: 48%;           /* Przesunięte bardziej w lewo */
     top: -10%;
-    transform: translateX(-50%) rotate(15deg);
+    transform: translateX(-50%) rotate(12deg); /* Zmieniony kąt */
     z-index: 5;
     pointer-events: none;
+    display: block;
 }
 
 
