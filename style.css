@@ -110,11 +110,11 @@ body {
   
 #overlayContainer {  
    position: absolute;  
-   top: 50px;  
+   top: 30px;  
    left: 50px;  
-   width: 150px;  
+   width: 120px;  
    height: 150px;  
-   border: 7px solid white;  
+   border: 0px solid white;  
    cursor: move;  
    z-index: 10;  
    overflow: hidden;   
