@@ -177,9 +177,9 @@ body {
     height: 120%;
     background-color: rgba(0, 0, 0, 0.5);
     filter: blur(15px);
-    left: 56%; /* Przesuwamy cień bardziej w lewo */
+    left: 16%; /* Przesuwamy cień bardziej w lewo */
     top: -10%;
-    transform: translateX(-40%) rotate(8deg);
+    transform: translateX(-10%) rotate(8deg);
     z-index: 5;
     pointer-events: none;
     display: block;
