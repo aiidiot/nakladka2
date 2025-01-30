@@ -244,7 +244,24 @@ const rotateLeft = document.getElementById('rotateLeft');
 const rotateRight = document.getElementById('rotateRight');
 
 function updateRotation(value) {
-    overlayImage.style.transform = `rotate(${value}deg)`;
+    // Get current translation values if they exist
+    const currentTransform = overlayContainer.style.transform || '';
+    const translateMatch = currentTransform.match(/translate\(([-\d.]+px),\s*([-\d.]+px)\)/);
+    const translateX = translateMatch ? translateMatch[1] : '0px';
+    const translateY = translateMatch ? translateMatch[2] : '0px';
+
+    // Apply both rotation and translation to overlayContainer
+    overlayContainer.style.transform = `translate(${translateX}, ${translateY}) rotate(${value}deg)`;
+    
+    // Update shadow rotation
+    if (shadow.style.display === 'block') {
+        const shadowTranslateMatch = shadow.style.transform.match(/translate\(([-\d.]+px),\s*([-\d.]+px)\)/);
+        const shadowTranslateX = shadowTranslateMatch ? shadowTranslateMatch[1] : '0px';
+        const shadowTranslateY = shadowTranslateMatch ? shadowTranslateMatch[2] : '0px';
+        shadow.style.transform = `translate(${shadowTranslateX}, ${shadowTranslateY}) rotate(${value}deg)`;
+    }
+    
+    // Update input values
     rotationAngleInput.value = value;
     rotationAngleNumberInput.value = value;
 }
@@ -259,6 +276,18 @@ function rotateBy(degrees) {
     
     // Aktualizacja interfejsu i obrotu
     updateRotation(newRotation);
+}
+
+// Also modify setTranslate function to preserve rotation
+function setTranslate(xPos, yPos, el) {
+    const currentRotation = rotationAngleInput.value || '0';
+    
+    if (el === overlayContainer) {
+        el.style.transform = `translate(${xPos}px, ${yPos}px) rotate(${currentRotation}deg)`;
+        if (shadow.style.display === 'block') {
+            shadow.style.transform = `translate(${xPos + 3}px, ${yPos + 3}px) rotate(${currentRotation}deg)`;
+        }
+    }
 }
 
 rotationAngleInput.addEventListener('input', () => {
