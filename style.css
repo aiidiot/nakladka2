@@ -143,8 +143,9 @@ body {
     top: 0 !important;
     left: 60% !important;
     transform: translateX(-100%);
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+
 }
 
 /* Style dla obrazu nakładki */
@@ -174,7 +175,7 @@ body {
     width: 60%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    filter: blur(10px);
+    filter: blur(30px);
     position: absolute;
     left: 60%;
     top: 0;
