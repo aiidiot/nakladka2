@@ -41,31 +41,40 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateShadow() {
         const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth);
         
-        shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
-        shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
-        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
-        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
-        shadow.className = overlayContainer.className;
-        
         if (overlayContainer.classList.contains('sklejka')) {
-            shadow.classList.add('sklejka');
-            shadow.classList.remove('skos');
-        } else if (overlayContainer.classList.contains('skos')) {
-            shadow.classList.add('skos');
-            shadow.classList.remove('sklejka');
-            
-            const overlayTransform = getComputedStyle(overlayContainer).transform;
-            shadow.style.transform = overlayTransform;
-            
-            const rect = overlayContainer.getBoundingClientRect();
-            shadow.style.width = rect.width + 'px';
-            shadow.style.height = rect.height + 'px';
+            // Logika dla sklejki
+            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
             shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
             shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
-        } else {
+            shadow.classList.add('sklejka');
+            shadow.classList.remove('skos');
+        } 
+        else if (overlayContainer.classList.contains('skos')) {
+            // Pozycjonowanie cienia dla skosu - dokładnie na granicy podziału
+            shadow.classList.add('skos');
+            shadow.classList.remove('sklejka');
+            shadow.style.width = '100px';
+            shadow.style.height = '120%';
+            shadow.style.left = '50%'; // Ustawiamy na środku
+            shadow.style.transform = 'translateX(-50%) rotate(15deg)'; // Centrujemy i obracamy
+            shadow.style.top = '-10%';
+            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
+            shadow.style.filter = 'blur(20px)';
+        } 
+        else {
+            // Standardowa logika dla pozostałych kształtów
+            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+            shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+            shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
             shadow.classList.remove('sklejka', 'skos');
         }
-    }
+
+        // Upewniamy się, że główny element jest zawsze nad cieniem
+        overlayContainer.style.zIndex = '6';
+        shadow.style.zIndex = '5';
+       }
     // Funkcja do ustawiania stylów obrazu nakładki
     function setupOverlayImage(imgElement) {
         // Czekamy na załadowanie obrazu
