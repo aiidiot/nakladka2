@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorPresets = document.querySelectorAll('.color-btn');
     const shapeButtons = document.querySelectorAll('.btn[data-shape]');
     const shadowToggle = document.getElementById('shadowToggle');
-    const rotationAngleInput = document.getElementById('rotationAngle');
 
     // Funkcja inicjalizacji cienia - zawsze włączony
     function initializeShadow() {
@@ -37,101 +36,64 @@ document.addEventListener('DOMContentLoaded', () => {
         updateShadow();
         shadowToggle.checked = true;
     }
- // Funkcja aktualizacji cienia
+
+    // Funkcja aktualizacji cienia
     function updateShadow() {
         const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth);
         
+        shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+        shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
+        shadow.className = overlayContainer.className;
+        
         if (overlayContainer.classList.contains('sklejka')) {
-            // Logika dla sklejki
-            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
-            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
-            shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
-            shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
             shadow.classList.add('sklejka');
             shadow.classList.remove('skos');
-        } 
-        else if (overlayContainer.classList.contains('skos')) {
-            // Uproszczona logika dla skosu - prosty prostokąt
+        } else if (overlayContainer.classList.contains('skos')) {
             shadow.classList.add('skos');
             shadow.classList.remove('sklejka');
-            shadow.style.width = '80px'; // Węższy prostokąt
-            shadow.style.height = '120%';
-            shadow.style.left = '48%'; // Przesunięte w lewo
-            shadow.style.top = '-10%';
-            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            shadow.style.filter = 'blur(15px)';
-            shadow.style.transform = 'translateX(-50%) rotate(12deg)'; // Mniejszy kąt
-            shadow.style.zIndex = '5';
-        } 
-        else {
-            // Standardowa logika dla pozostałych kształtów
-            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
-            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+            
+            const overlayTransform = getComputedStyle(overlayContainer).transform;
+            shadow.style.transform = overlayTransform;
+            
+            const rect = overlayContainer.getBoundingClientRect();
+            shadow.style.width = rect.width + 'px';
+            shadow.style.height = rect.height + 'px';
             shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
             shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
+        } else {
             shadow.classList.remove('sklejka', 'skos');
         }
-
-        // Upewniamy się, że główny element jest zawsze nad cieniem
-        overlayContainer.style.zIndex = '6';
-        shadow.style.zIndex = '5';
     }
-
     // Funkcja do ustawiania stylów obrazu nakładki
     function setupOverlayImage(imgElement) {
-        imgElement.style.width = '100%';
-        imgElement.style.height = '100%';
-        imgElement.style.objectFit = 'contain'; // zmiana z 'cover' na 'contain'
-        imgElement.style.position = 'relative';
-    }
- // Obsługa kształtu nakładki
-    document.querySelectorAll('[data-shape]').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Usuń active ze wszystkich przycisków
-            document.querySelectorAll('[data-shape]').forEach(b => b.classList.remove('active'));
-            // Dodaj active do klikniętego przycisku
-            this.classList.add('active');
+        // Czekamy na załadowanie obrazu
+        imgElement.onload = function() {
+            const container = overlayContainer;
+            const containerWidth = container.offsetWidth;
+            const containerHeight = container.offsetHeight;
+            const imgWidth = this.naturalWidth;
+            const imgHeight = this.naturalHeight;
+
+            // Obliczamy skalę, aby obraz zmieścił się w całości
+            const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight);
             
-            const shape = this.dataset.shape;
+            imgElement.style.width = '100%';
+            imgElement.style.height = '100%';
+            imgElement.style.objectFit = 'contain'; // Zmiana z 'cover' na 'contain'
+            imgElement.style.position = 'relative';
             
-            // Reset wszystkich transformacji i klas
-            overlayContainer.classList.remove('circle', 'square', 'sklejka', 'skos');
-            overlayContainer.style.transform = 'none';
-            shadow.style.transform = 'none';
-            overlayImage.style.transform = 'none';
-            
-            const currentRotation = rotationAngleInput.value || '0';
-            
-            if (shape === 'circle') {
-                overlayContainer.classList.add('circle');
-                shadow.style.borderRadius = '50%';
-                overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
-            } else if (shape === 'square') {
-                overlayContainer.classList.add('square');
-                shadow.style.borderRadius = '0';
-                overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
-            } else if (shape === 'sklejka') {
-                overlayContainer.classList.add('sklejka');
-                overlayContainer.style.width = '50%';
-                overlayContainer.style.height = '100%';
-                overlayContainer.style.left = '0';
-                overlayContainer.style.top = '0';
-                overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
-            } else if (shape === 'skos') {
-                overlayContainer.classList.add('skos');
-                overlayContainer.style.display = 'block';
-                overlayContainer.style.width = '50%';
-                overlayContainer.style.height = '100%';
-                overlayContainer.style.top = '0';
-                overlayContainer.style.left = '50%';
-                overlayContainer.style.transform = 'translateX(-100%)';
-                overlayImage.style.display = 'block';
-                overlayImage.style.transform = 'none';
+            // Ustawiamy skalę w kontrolce
+            if (overlayImageScale) {
+                overlayImageScale.value = Math.round(scale * 100);
+                const event = new Event('input');
+                overlayImageScale.dispatchEvent(event);
             }
-            updateShadow();
-        });
-    });
- // Przeciąganie nakładki
+        };
+    }
+
+    // Przeciąganie nakładki
     function dragStart(e) {
         if (e.type === "touchstart") {
             initialX = e.touches[0].clientX - xOffset;
@@ -163,9 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTranslate(currentX, currentY, overlayContainer);
             if (shadow.style.display === 'block') {
-                if (!overlayContainer.classList.contains('skos')) {
-                    setTranslate(currentX + 3, currentY + 3, shadow);
-                }
+                setTranslate(currentX + 3, currentY + 3, shadow);
             }
         }
     }
@@ -180,18 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentRotation = rotationAngleInput.value || '0';
         
         if (el === overlayContainer) {
-            if (overlayContainer.classList.contains('skos')) {
-                el.style.transform = `translateX(-100%) translate(${xPos}px, ${yPos}px)`;
-            } else {
-                el.style.transform = `translate(${xPos}px, ${yPos}px) rotate(${currentRotation}deg)`;
-            }
-            
-            if (shadow.style.display === 'block' && !overlayContainer.classList.contains('skos')) {
+            el.style.transform = `translate(${xPos}px, ${yPos}px) rotate(${currentRotation}deg)`;
+            if (shadow.style.display === 'block') {
                 shadow.style.transform = `translate(${xPos + 3}px, ${yPos + 3}px) rotate(${currentRotation}deg)`;
             }
         }
     }
- // Dodawanie listenerów dla drag & drop
+
+    // Dodawanie listenerów dla drag & drop
     overlayContainer.addEventListener('touchstart', dragStart, false);
     overlayContainer.addEventListener('touchend', dragEnd, false);
     overlayContainer.addEventListener('touchmove', drag, false);
@@ -199,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
     overlayContainer.addEventListener('mousedown', dragStart, false);
     document.addEventListener('mousemove', drag, false);
     document.addEventListener('mouseup', dragEnd, false);
-
     // Obsługa zdjęć
     mainImageInput.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
@@ -237,11 +192,25 @@ document.addEventListener('DOMContentLoaded', () => {
             overlayContainer.style.borderColor = color;
         });
     });
- // Obsługa grubości ramki i rozmiaru
+
+    // Obsługa kształtów
+    shapeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            shapeButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            const shape = this.dataset.shape;
+            overlayContainer.className = shape;
+            if (shadow.style.display === 'block') {
+                shadow.className = shape;
+                updateShadow();
+            }
+        });
+    });
+
+    // Obsługa grubości ramki
     const borderWidthInput = document.getElementById('borderWidth');
     const borderWidthNumberInput = document.getElementById('borderWidthInput');
-    const overlaySizeInput = document.getElementById('overlaySize');
-    const overlaySizeNumberInput = document.getElementById('overlaySizeInput');
 
     function updateBorderWidth(value) {
         overlayContainer.style.borderWidth = `${value}px`;
@@ -257,6 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
     borderWidthNumberInput.addEventListener('input', () => {
         updateBorderWidth(borderWidthNumberInput.value);
     });
+    // Obsługa rozmiaru
+    const overlaySizeInput = document.getElementById('overlaySize');
+    const overlaySizeNumberInput = document.getElementById('overlaySizeInput');
 
     function updateOverlaySize(value) {
         if (!overlayContainer.classList.contains('sklejka') && !overlayContainer.classList.contains('skos')) {
@@ -283,32 +255,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const rotateRight = document.getElementById('rotateRight');
 
     function updateRotation(value) {
-        if (overlayContainer.classList.contains('skos')) {
-            // Dla skosu nie stosujemy obrotu
-            return;
-        }
-
+        // Get current translation values if they exist
         const currentTransform = overlayContainer.style.transform || '';
         const translateMatch = currentTransform.match(/translate\(([-\d.]+px),\s*([-\d.]+px)\)/);
         const translateX = translateMatch ? translateMatch[1] : '0px';
         const translateY = translateMatch ? translateMatch[2] : '0px';
 
+        // Apply both rotation and translation to overlayContainer
         overlayContainer.style.transform = `translate(${translateX}, ${translateY}) rotate(${value}deg)`;
         
-        if (shadow.style.display === 'block' && !overlayContainer.classList.contains('skos')) {
+        // Update shadow rotation
+        if (shadow.style.display === 'block') {
             const shadowTranslateMatch = shadow.style.transform.match(/translate\(([-\d.]+px),\s*([-\d.]+px)\)/);
             const shadowTranslateX = shadowTranslateMatch ? shadowTranslateMatch[1] : '0px';
             const shadowTranslateY = shadowTranslateMatch ? shadowTranslateMatch[2] : '0px';
             shadow.style.transform = `translate(${shadowTranslateX}, ${shadowTranslateY}) rotate(${value}deg)`;
         }
         
+        // Update input values
         rotationAngleInput.value = value;
         rotationAngleNumberInput.value = value;
     }
- function rotateBy(degrees) {
-        if (overlayContainer.classList.contains('skos')) {
-            return; // Blokujemy obrót dla skosu
-        }
+
+    function rotateBy(degrees) {
         const currentRotation = parseInt(rotationAngleInput.value) || 0;
         let newRotation = currentRotation + degrees;
         newRotation = ((newRotation % 360) + 360) % 360;
@@ -325,7 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rotateLeft.addEventListener('click', () => rotateBy(-10));
     rotateRight.addEventListener('click', () => rotateBy(10));
-
     // Obsługa cienia
     shadowToggle.addEventListener('change', () => {
         if (shadowToggle.checked) {
@@ -350,14 +318,11 @@ document.addEventListener('DOMContentLoaded', () => {
     overlayImageScale.addEventListener('input', function() {
         const scale = this.value / 100;
         const currentRotation = rotationAngleInput.value;
-        if (!overlayContainer.classList.contains('skos')) {
-            overlayImage.style.transform = `rotate(${currentRotation}deg) scale(${scale})`;
-        } else {
-            overlayImage.style.transform = `scale(${scale})`;
-        }
+        overlayImage.style.transform = `rotate(${currentRotation}deg) scale(${scale})`;
         this.nextElementSibling.textContent = `${this.value}%`;
     });
- // Obsługa przycisku autodopasowania
+
+    // Obsługa przycisku autodopasowania
     const autoFitBtn = document.getElementById('autoFitBtn');
     autoFitBtn.addEventListener('click', () => {
         const containerWidth = mainImage.parentElement.offsetWidth;
@@ -396,7 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
             overlayLibrary.value = 'custom';
         }
     });
-
     // Obsługa biblioteki nakładek
     overlayLibrary.addEventListener('change', function() {
         if (this.value !== 'custom') {
@@ -413,7 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
             overlayImageLink.value = '';
         }
     });
- // Obsługa zapisywania
+
+    // Obsługa zapisywania
     const saveAsBtn = document.getElementById('saveAsBtn');
     saveAsBtn.addEventListener('click', () => {
         domtoimage.toBlob(document.getElementById('editorContainer'))
@@ -457,30 +422,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getCurrentSettings() {
-        const transform = overlayContainer.style.transform;
-        let position = { x: xOffset, y: yOffset };
-        
-        if (overlayContainer.classList.contains('skos')) {
-            position = {
-                x: xOffset,
-                y: yOffset,
-                isSkos: true
-            };
-        }
-
         return {
             shape: overlayContainer.className,
             overlaySize: overlayContainer.style.width,
             borderWidth: overlayContainer.style.borderWidth,
             borderColor: overlayContainer.style.borderColor,
-            position: position,
+            position: {
+                x: xOffset,
+                y: yOffset
+            },
             rotation: rotationAngleInput.value,
             shadow: true,
-            overlayScale: overlayImageScale.value,
-            transform: transform
+            overlayScale: overlayImageScale.value
         };
     }
- // Funkcja aplikująca zapisane ustawienia
+    // Funkcja aplikująca zapisane ustawienia
     function applySettings(settings) {
         // Przywracanie kształtu
         overlayContainer.className = settings.shape;
@@ -502,26 +458,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Przywracanie pozycji
         xOffset = settings.position.x;
         yOffset = settings.position.y;
+        setTranslate(xOffset, yOffset, overlayContainer);
 
-        if (settings.position.isSkos) {
-            overlayContainer.style.transform = 'translateX(-100%)';
-        } else {
-            setTranslate(xOffset, yOffset, overlayContainer);
-        }
-
-        // Przywracanie obrotu tylko jeśli nie jest to skos
-        if (!settings.shape.includes('skos')) {
-            updateRotation(settings.rotation);
-        }
+        // Przywracanie obrotu
+        updateRotation(settings.rotation);
         
         // Przywracanie skali
         overlayImageScale.value = settings.overlayScale;
         const scale = settings.overlayScale / 100;
-        if (settings.shape.includes('skos')) {
-            overlayImage.style.transform = `scale(${scale})`;
-        } else {
-            overlayImage.style.transform = `rotate(${settings.rotation}deg) scale(${scale})`;
-        }
+        overlayImage.style.transform = `rotate(${settings.rotation}deg) scale(${scale})`;
 
         // Aktualizacja cienia
         updateShadow();
@@ -553,6 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const settings = getCurrentSettings();
         localStorage.setItem('template_' + newTemplateName, JSON.stringify(settings));
         
+        // Dodawanie nowej opcji do selecta
         const select = document.getElementById('templateSelect');
         const exists = Array.from(select.options).some(option => option.value === newTemplateName);
         
