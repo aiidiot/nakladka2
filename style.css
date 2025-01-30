@@ -228,6 +228,8 @@ input[type="number"] {
     
     z-index: 5;
     pointer-events: none;
+       filter: blur(20px); /* Zwiększamy rozmycie */
+
 }
 
 #shadow.circle {
