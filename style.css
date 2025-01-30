@@ -133,14 +133,16 @@ body {
     border-radius: 0 !important;
 }
 
+/* Aktualizacja dla overlayContainer i skos */
 #overlayContainer.skos {
     border-radius: 0;
     width: 50% !important;
     height: 100% !important;
     top: 0 !important;
     left: 0 !important;
-    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    /* Odwracamy proporcje - szerzej u góry, wężej na dole */
+    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
 }
   
 #overlayImage {  
@@ -206,12 +208,13 @@ input[type="number"] {
 
 #shadow.skos {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.5); /* Nieco lżejszy cień */
-    filter: blur(15px); /* Większe rozmycie dla efektu cienia */
+    background-color: rgba(0, 0, 0, 0.4); /* Zmniejszamy nieprzezroczystość */
+    filter: blur(20px); /* Zwiększamy rozmycie */
     transform-origin: top left;
     
-    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
-    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    /* Ten sam kształt co overlay */
+    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
     
     z-index: 5;
     pointer-events: none;
