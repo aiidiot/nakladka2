@@ -135,15 +135,16 @@ body {
 
 /* Aktualizacja dla overlayContainer i skos */
 #overlayContainer.skos {
-    border-radius: 0;
+    position: absolute;
     width: 50% !important;
     height: 100% !important;
     top: 0 !important;
     right: 0 !important;
     left: auto !important;
+    border-radius: 0;
     -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-    position: absolute;
+    display: block !important; /* Wymuszamy wyświetlanie */
     z-index: 6;
 }
   
@@ -153,6 +154,14 @@ body {
    object-fit: cover;  
    transform-origin: center center;
 }  
+
+#overlayImage.skos {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+    display: block !important;
+}
+
   
 .nav-arrows {  
    position: relative;  
@@ -210,12 +219,18 @@ input[type="number"] {
 
 #shadow.skos {
     position: absolute;
+    width: 100px;
+    height: 120%;
     background-color: rgba(0, 0, 0, 0.4);
     filter: blur(20px);
-    transform-origin: center;
+    left: 50%;
+    top: -10%;
+    transform: translateX(-50%) rotate(15deg);
     z-index: 5;
     pointer-events: none;
+    display: block !important;
 }
+
 
 /* Upewniamy się, że główny element jest nad cieniem */
 #overlayContainer.skos {
