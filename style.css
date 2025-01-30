@@ -135,14 +135,14 @@ body {
 
 /* Aktualizacja dla overlayContainer i skos */
 #overlayContainer.skos {
-    border-radius: 0;
-    width: 50% !important;
+     width: 50% !important;
     height: 100% !important;
     top: 0 !important;
-    left: 0 !important;
-    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    right: 0 !important;
+    left: auto !important;
+    border-radius: 0 !important;
 }
+
 
   
 #overlayImage {  
@@ -222,15 +222,7 @@ input[type="number"] {
     pointer-events: none;
 }
 
-/* Upewniamy się, że główny element jest nad cieniem */
-#overlayContainer.skos {
-    position: relative;
-    z-index: 6;
-}
 
-/* Dodaj overflow: hidden do elementu nadrzędnego */
-.parent-element {
-    overflow: hidden;
 
 #shadow.circle {
     background-color: rgba(0, 0, 0, 0.5);
