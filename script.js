@@ -414,6 +414,140 @@ rotateRight.addEventListener('click', () => rotateBy(10));
                 });
             });
     });
+    // Funkcja pobierająca aktualne ustawienia nakładki
+function getCurrentSettings() {
+    return {
+        shape: overlayContainer.className, // Zapisujemy pełną nazwę klasy
+        overlaySize: overlayContainer.style.width,
+        borderWidth: overlayContainer.style.borderWidth,
+        borderColor: overlayContainer.style.borderColor,
+        position: {
+            x: xOffset,
+            y: yOffset
+        },
+        rotation: rotationAngleInput.value,
+        shadow: shadowToggle.checked,
+        overlayScale: overlayImageScale.value
+    };
+}
+
+// Funkcja aplikująca zapisane ustawienia
+function applySettings(settings) {
+    // Przywracanie kształtu
+    overlayContainer.className = settings.shape;
+    if (shadow.style.display === 'block') {
+        shadow.className = settings.shape;
+    }
+
+    // Przywracanie rozmiaru
+    overlayContainer.style.width = settings.overlaySize;
+    overlayContainer.style.height = settings.overlaySize;
+
+    // Przywracanie ramki
+    overlayContainer.style.borderWidth = settings.borderWidth;
+    overlayContainer.style.borderColor = settings.borderColor;
+    borderColorInput.value = settings.borderColor;
+    borderWidthInput.value = parseInt(settings.borderWidth);
+    borderWidthNumberInput.value = parseInt(settings.borderWidth);
+
+    // Przywracanie pozycji
+    xOffset = settings.position.x;
+    yOffset = settings.position.y;
+    setTranslate(xOffset, yOffset, overlayContainer);
+
+    // Przywracanie obrotu
+    updateRotation(settings.rotation);
+    
+    // Przywracanie skali
+    overlayImageScale.value = settings.overlayScale;
+    const scale = settings.overlayScale / 100;
+    overlayImage.style.transform = `rotate(${settings.rotation}deg) scale(${scale})`;
+
+    // Przywracanie cienia
+    shadowToggle.checked = settings.shadow;
+    shadow.style.display = settings.shadow ? 'block' : 'none';
+    if (settings.shadow) {
+        updateShadow();
+    }
+}
+
+// Funkcja ładująca zapisane szablony do selecta
+function loadSavedTemplates() {
+    const select = document.getElementById('templateSelect');
+    select.innerHTML = ''; // Czyszczenie selecta
+    
+    // Dodawanie zapisanych szablonów
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('template_')) {
+            const templateName = key.replace('template_', '');
+            const option = new Option(templateName, templateName);
+            select.add(option);
+        }
+    }
+}
+
+// Event Listenery dla przycisków
+document.getElementById('loadTemplateBtn').addEventListener('click', function() {
+    const templateName = document.getElementById('templateSelect').value;
+    if (!templateName) {
+        alert('Wybierz szablon do wczytania');
+        return;
+    }
+    
+    const template = localStorage.getItem('template_' + templateName);
+    if (template) {
+        applySettings(JSON.parse(template));
+    } else {
+        alert('Nie znaleziono szablonu');
+    }
+});
+
+document.getElementById('saveTemplateBtn').addEventListener('click', function() {
+    const newTemplateName = document.getElementById('newTemplateName').value.trim();
+    if (!newTemplateName) {
+        alert('Wprowadź nazwę szablonu');
+        return;
+    }
+    
+    const settings = getCurrentSettings();
+    localStorage.setItem('template_' + newTemplateName, JSON.stringify(settings));
+    
+    // Dodawanie nowej opcji do selecta
+    const select = document.getElementById('templateSelect');
+    const exists = Array.from(select.options).some(option => option.value === newTemplateName);
+    
+    if (!exists) {
+        const option = new Option(newTemplateName, newTemplateName);
+        select.add(option);
+    }
+    
+    document.getElementById('newTemplateName').value = '';
+    alert('Szablon został zapisany');
+});
+
+document.getElementById('deleteTemplateBtn').addEventListener('click', function() {
+    const select = document.getElementById('templateSelect');
+    if (select.selectedIndex === -1) {
+        alert('Wybierz szablon do usunięcia');
+        return;
+    }
+    
+    const templateName = select.value;
+    if (confirm(`Czy na pewno chcesz usunąć szablon "${templateName}"?`)) {
+        localStorage.removeItem('template_' + templateName);
+        select.remove(select.selectedIndex);
+        alert('Szablon został usunięty');
+    }
+});
+
+// Dodanie inicjalizacji szablonów do istniejącego event listenera DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (istniejący kod)
+    
+    // Inicjalizacja szablonów
+    loadSavedTemplates();
+});
 
     // Setup nawigacji
     function setupNavigation(navId, targetImage) {
