@@ -218,17 +218,22 @@ input[type="number"] {
 
 #shadow.skos {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.66); /* Zmniejszamy nieprzezroczystość */
-    filter: blur(50px); /* Zwiększamy rozmycie */
-     transform-origin: top left;
-  
-    
-    /* Ten sam kształt co overlay */
-    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-    
+    width: 100px; /* Wąski prostokąt */
+    height: 120%; /* Większy niż kontener żeby wychodził poza */
+    background-color: rgba(0, 0, 0, 0.4);
+    filter: blur(20px);
+    transform-origin: center center;
     z-index: 5;
+    transform: rotate(15deg); /* Kąt pochylenia - dostosuj według potrzeb */
+    right: -50px; /* Pozycja za elementem - dostosuj */
+    top: -10%; /* Żeby wychodził poza kontener */
     pointer-events: none;
+}
+
+/* Upewniamy się, że główny element jest nad cieniem */
+#overlayContainer.skos {
+    position: relative;
+    z-index: 6;
 }
 
 /* Dodaj overflow: hidden do elementu nadrzędnego */
