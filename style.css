@@ -218,8 +218,8 @@ input[type="number"] {
     width: 60px;          /* Zmniejszona szerokość */
     height: 120%;
     background-color: rgba(0, 0, 0, 0.87);  /* Zwiększona nieprzezroczystość */
-    filter: blur(15px);   /* Zmniejszone rozmycie */
-    left: 58%;           /* Przesunięte bardziej w lewo */
+    filter: blur(5px);   /* Zmniejszone rozmycie */
+    left: 78%;           /* Przesunięte bardziej w lewo */
     top: -10%;
     transform: translateX(-60%) rotate(8deg); /* Zmieniony kąt */
     z-index: 5;
