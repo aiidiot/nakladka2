@@ -143,8 +143,8 @@ body {
     top: 0 !important;
     left: 60% !important;
     transform: translateX(-100%);
-    -webkit-clip-path: polygon(0 0, 110% 0, 85% 100%, 0% 100%);
-    clip-path: polygon(0 0, 110% 0, 85% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
 /* Style dla obrazu nakładki */
@@ -170,15 +170,17 @@ body {
     filter: blur(10px);
 }
 
-/* Cień dla skosu - uproszczony prostokąt */
 #shadow.skos {
-    width: 30px;
-    height: 120%;
+    width: 60%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    filter: blur(5px);
-    left: 50%;
-    top: -10%;
-    transform: translateX(-40%) rotate(7deg);
+    filter: blur(10px);
+    position: absolute;
+    left: 60%;
+    top: 0;
+    transform: translateX(-100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 5;
 }
 
 /* Cień dla koła */
