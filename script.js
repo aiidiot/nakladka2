@@ -51,16 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
             shadow.classList.remove('skos');
         } 
         else if (overlayContainer.classList.contains('skos')) {
-            // Uproszczona logika dla skosu - prosty pochylony prostokąt
+            // Pozycjonowanie cienia dla skosu - dokładnie na granicy podziału
             shadow.classList.add('skos');
             shadow.classList.remove('sklejka');
-            shadow.style.width = '100px'; // Wąski prostokąt
+            shadow.style.width = '100px';
             shadow.style.height = '120%';
-            shadow.style.right = '-50px';
+            shadow.style.left = '50%'; // Ustawiamy na środku
+            shadow.style.transform = 'translateX(-50%) rotate(15deg)'; // Centrujemy i obracamy
             shadow.style.top = '-10%';
             shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
             shadow.style.filter = 'blur(20px)';
-            shadow.style.transform = 'rotate(15deg)';
         } 
         else {
             // Standardowa logika dla pozostałych kształtów
