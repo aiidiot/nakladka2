@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlayContainer.style.zIndex = '6';
         shadow.style.zIndex = '5';
     }
+ }  
 // Obsługa kształtu nakładki  
 document.querySelectorAll('[data-shape]').forEach(btn => {  
    btn.addEventListener('click', function() {
