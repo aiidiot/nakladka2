@@ -541,6 +541,24 @@ document.getElementById('deleteTemplateBtn').addEventListener('click', function(
     }
 });
 
+    // Funkcja ładująca szablony do selecta
+function loadSavedTemplates() {
+    const select = document.getElementById('templateSelect');
+    
+    // Wyczyść select
+    select.innerHTML = '';
+    
+    // Przeszukaj localStorage i dodaj wszystkie znalezione szablony
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('template_')) {
+            const templateName = key.replace('template_', '');
+            const option = new Option(templateName, templateName);
+            select.add(option);
+        }
+    }
+}
+
 // Dodanie inicjalizacji szablonów do istniejącego event listenera DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     // ... (istniejący kod)
