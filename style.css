@@ -178,7 +178,7 @@ body {
     filter: blur(5px);
     left: 50%;
     top: -10%;
-    transform: translateX(-40%) rotate(5deg);
+    transform: translateX(-40%) rotate(7deg);
 }
 
 /* Cień dla koła */
