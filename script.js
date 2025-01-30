@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlayContainer.style.zIndex = '6';
         shadow.style.zIndex = '5';
     }
- // Obsługa kształtu nakładki  
+// Obsługa kształtu nakładki  
 document.querySelectorAll('[data-shape]').forEach(btn => {  
    btn.addEventListener('click', function() {
       // Usuń active ze wszystkich przycisków
@@ -92,50 +92,35 @@ document.querySelectorAll('[data-shape]').forEach(btn => {
       shadow.style.transform = 'none';
       overlayImage.style.transform = 'none';
       
+      const currentRotation = rotationAngleInput.value || '0'; // Używamy aktualnej wartości obrotu
+      
       if (shape === 'circle') {  
         overlayContainer.classList.add('circle');  
         shadow.style.borderRadius = '50%';
-        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
+        overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
       } else if (shape === 'square') {  
         overlayContainer.classList.add('square');  
         shadow.style.borderRadius = '0';
-        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
+        overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
       } else if (shape === 'sklejka') {
         overlayContainer.classList.add('sklejka');
         overlayContainer.style.width = '50%';
         overlayContainer.style.height = '100%';
         overlayContainer.style.left = '0';
         overlayContainer.style.top = '0';
-        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
+        overlayContainer.style.transform = `rotate(${currentRotation}deg)`;
       } else if (shape === 'skos') {
-         overlayContainer.classList.add('sklejka');
-        overlayContainer.style.width = '90%';
+        overlayContainer.classList.add('skos');
+        shadow.style.borderRadius = '0';
+        overlayContainer.style.width = '50%';
         overlayContainer.style.height = '100%';
-        overlayContainer.style.left = '0';
         overlayContainer.style.top = '0';
-        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
-        
-        // Dodajemy kontrolne wyświetlanie
-        console.log('Stan overlay po ustawieniu skosu:', {
-            width: overlayContainer.style.width,
-            height: overlayContainer.style.height,
-            top: overlayContainer.style.top,
-            left: overlayContainer.style.left,
-            display: overlayContainer.style.display,
-            visibility: overlayContainer.style.visibility,
-            classes: overlayContainer.className,
-            transform: overlayContainer.style.transform
-        });
-        
-        // Dodajemy wymuszenie widoczności
-        overlayContainer.style.display = 'block';
-        overlayContainer.style.visibility = 'visible';
-        
-        // Sprawdzamy czy mamy prawidłowe referencje
-        console.log('overlayImage:', overlayImage);
-        console.log('overlayContainer:', overlayContainer);
+        overlayContainer.style.left = '0';
+        overlayImage.style.transform = 'none';  // Reset transformacji zdjęcia
       }
       updateShadow();
+   });  
+});
       
       // Sprawdzamy końcowy stan
       console.log('Końcowy stan overlayContainer:', {
