@@ -140,8 +140,8 @@ body {
     height: 100% !important;
     top: 0 !important;
     left: 0 !important;
-    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
 }
 
   
@@ -152,12 +152,7 @@ body {
    transform-origin: center center;
 }  
 
-#overlayImage.skos {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain;
-    display: block !important;
-}
+
 
   
 .nav-arrows {  
