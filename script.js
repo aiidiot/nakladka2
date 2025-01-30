@@ -15,6 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainImage = document.getElementById('mainImage');
     const overlayImage = document.getElementById('overlayImage');
 
+    // Funkcja ładująca zapisane szablony do selecta
+function loadSavedTemplates() {
+    const select = document.getElementById('templateSelect');
+    select.innerHTML = ''; // Czyszczenie selecta
+    
+    // Dodawanie zapisanych szablonów
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('template_')) {
+            const templateName = key.replace('template_', '');
+            const option = new Option(templateName, templateName);
+            select.add(option);
+        }
+    }
+}
+
     // Elementy sterujące
     const mainImageInput = document.getElementById('mainImageInput');
     const overlayImageInput = document.getElementById('overlayImageInput');
@@ -471,21 +487,7 @@ function applySettings(settings) {
     }
 }
 
-// Funkcja ładująca zapisane szablony do selecta
-function loadSavedTemplates() {
-    const select = document.getElementById('templateSelect');
-    select.innerHTML = ''; // Czyszczenie selecta
-    
-    // Dodawanie zapisanych szablonów
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith('template_')) {
-            const templateName = key.replace('template_', '');
-            const option = new Option(templateName, templateName);
-            select.add(option);
-        }
-    }
-}
+
 
 // Event Listenery dla przycisków
 document.getElementById('loadTemplateBtn').addEventListener('click', function() {
