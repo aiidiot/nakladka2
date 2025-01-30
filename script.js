@@ -75,32 +75,48 @@ document.addEventListener('DOMContentLoaded', () => {
         overlayContainer.style.zIndex = '6';
         shadow.style.zIndex = '5';
     }
-    // Funkcja do ustawiania stylów obrazu nakładki
-    function setupOverlayImage(imgElement) {
-        // Czekamy na załadowanie obrazu
-        imgElement.onload = function() {
-            const container = overlayContainer;
-            const containerWidth = container.offsetWidth;
-            const containerHeight = container.offsetHeight;
-            const imgWidth = this.naturalWidth;
-            const imgHeight = this.naturalHeight;
-
-            // Obliczamy skalę, aby obraz zmieścił się w całości
-            const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight);
-            
-            imgElement.style.width = '100%';
-            imgElement.style.height = '100%';
-            imgElement.style.objectFit = 'contain'; // Zmiana z 'cover' na 'contain'
-            imgElement.style.position = 'relative';
-            
-            // Ustawiamy skalę w kontrolce
-            if (overlayImageScale) {
-                overlayImageScale.value = Math.round(scale * 100);
-                const event = new Event('input');
-                overlayImageScale.dispatchEvent(event);
-            }
-        };
-    }
+   // Obsługa kształtu nakładki  
+document.querySelectorAll('[data-shape]').forEach(btn => {  
+   btn.addEventListener('click', function() {
+      // Usuń active ze wszystkich przycisków
+      document.querySelectorAll('[data-shape]').forEach(b => b.classList.remove('active'));
+      // Dodaj active do klikniętego przycisku
+      this.classList.add('active');
+      
+      const shape = this.dataset.shape;  
+      // Reset wszystkich transformacji i klas
+      overlayContainer.classList.remove('circle', 'square', 'sklejka', 'skos');
+      overlayContainer.style.transform = 'none';
+      shadow.style.transform = 'none';
+      overlayImage.style.transform = 'none';
+      
+      if (shape === 'circle') {  
+        overlayContainer.classList.add('circle');  
+        shadow.style.borderRadius = '50%';
+        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
+      } else if (shape === 'square') {  
+        overlayContainer.classList.add('square');  
+        shadow.style.borderRadius = '0';
+        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
+      } else if (shape === 'sklejka') {
+        overlayContainer.classList.add('sklejka');
+        overlayContainer.style.width = '50%';
+        overlayContainer.style.height = '100%';
+        overlayContainer.style.left = '0';
+        overlayContainer.style.top = '0';
+        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
+      } else if (shape === 'skos') {
+        overlayContainer.classList.add('skos');
+        shadow.style.borderRadius = '0';
+        overlayContainer.style.width = '50%';
+        overlayContainer.style.height = '100%';
+        overlayContainer.style.top = '0';
+        overlayContainer.style.left = '0';
+        overlayImage.style.transform = 'none';  // Reset transformacji zdjęcia
+      }
+      updateShadow();
+   });  
+});
 
     // Przeciąganie nakładki
     function dragStart(e) {
