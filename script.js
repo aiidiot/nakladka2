@@ -56,11 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
             shadow.classList.remove('sklejka');
             shadow.style.width = '10px';
             shadow.style.height = '120%';
-            shadow.style.left = '40%'; // Ustawiamy na środku
-            shadow.style.transform = 'translateX(-50%) rotate(7deg)'; // Centrujemy i obracamy
+            shadow.style.left = '50%'; // Ustawiamy na środku
+            shadow.style.transform = 'translateX(-50%) rotate(8deg)'; // Centrujemy i obracamy
             shadow.style.top = '-10%';
             shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            shadow.style.filter = 'blur(7px)';
+            shadow.style.filter = 'blur(8px)';
         } 
         else {
             // Standardowa logika dla pozostałych kształtów
