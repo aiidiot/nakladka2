@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Obsługa kształtów
+    // W sekcji obsługi kształtów
     shapeButtons.forEach(button => {
         button.addEventListener('click', function() {
             shapeButtons.forEach(btn => btn.classList.remove('active'));
@@ -210,6 +210,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const shape = this.dataset.shape;
             overlayContainer.className = shape;
+            
+            if (shape === 'skos') {
+                // Specjalne ustawienia dla skosu
+                overlayContainer.style.display = 'block';
+                overlayImage.style.display = 'block';
+                overlayImage.classList.add('skos');
+                document.getElementById('editorContainer').classList.add('skos');
+            } else {
+                // Usuwanie klas skos
+                overlayImage.classList.remove('skos');
+                document.getElementById('editorContainer').classList.remove('skos');
+            }
+            
             if (shadow.style.display === 'block') {
                 shadow.className = shape;
                 updateShadow();
