@@ -218,9 +218,9 @@ input[type="number"] {
 
 #shadow.skos {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.4); /* Zmniejszamy nieprzezroczystość */
-    filter: blur(20px); /* Zwiększamy rozmycie */
-    transform-origin: top left;
+    background-color: rgba(0, 0, 0, 0.66); /* Zmniejszamy nieprzezroczystość */
+    filter: blur(-20px); /* Zwiększamy rozmycie */
+  
     
     /* Ten sam kształt co overlay */
     -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
