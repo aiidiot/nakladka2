@@ -33,7 +33,7 @@
       </div>  
   
       <div class="control-group">  
-        <label>Kolor ramki (możesz ustwiać inne kolory):</label>  
+        <label>• Kolor ramki (możesz ustwiać inne kolory):</label>  
         <input type="color" id="borderColor" value="#FFFFFF">  
         <div class="color-presets">  
            <button class="color-btn" data-color="#FFFFFF" style="background: #FFFFFF; border: 1px solid #ccc;"></button>  
@@ -44,13 +44,13 @@
       </div>  
   
       <div class="control-group">  
-        <label>Grubość ramki (wpisz 0 by zniknęła):</label>  
+        <label>• Grubość ramki (wpisz 0 by zniknęła):</label>  
         <input type="range" id="borderWidth" min="1" max="50" value="6">  
         <input type="number" id="borderWidthInput" value="7" min="1" max="20"> px  
       </div>  
 
       <div class="control-group">  
-    <label>Obrót nakładki:</label>  
+    <label>• Obrót nakładki:</label>  
     <input type="range" id="rotationAngle" min="0" max="360" value="0">  
     <input type="number" id="rotationAngleInput" value="0" min="0" max="360"> stopni
     <button class="btn" id="rotateLeft" title="Obróć w lewo o 22.5°">↺</button>
@@ -58,7 +58,7 @@
 </div> 
   
       <div class="control-group">  
-        <label>Wielkość nakładki:</label>  
+        <label>• Wielkość nakładki:</label>  
         <input type="range" id="overlaySize" min="90" max="450" value="200">  
         <input type="number" id="overlaySizeInput" value="200" min="90" max="450"> px  
       </div>  
@@ -66,26 +66,26 @@
       <div class="control-group">  
         <label>  
            <input type="checkbox" id="shadowToggle">  
-           Cień pod nakładką  
+           • Cień pod nakładką  
         </label>  
       </div>  
    </div>  
   
    <div class="control-group">  
-      <label>Zdjęcie główne:</label>  
+      <label>• Zdjęcie główne:</label>  
       <input type="file" id="mainImageInput" accept="image/*">
       <input type="text" id="mainImageLink" placeholder="lub wklej link">  
       <button id="autoFitBtn" class="btn">Autodopasowanie zdjęcia</button>  
    </div>  
   
    <div class="control-group">  
-      <label>Zdjęcie nakładki (w tym PNG z przezroczystością):</label>  
+      <label>• Zdjęcie nakładki:</label>  
       <input type="file" id="overlayImageInput" accept="image/*">
       <input type="text" id="overlayImageLink" placeholder="lub wklej link">  
    </div>
 
    <div class="control-group">
-      <label>Biblioteka nakładek:</label>
+      <label>• Biblioteka nakładek:</label>
       <select id="overlayLibrary">
           <option value="custom">Wskazana wyżej</option>
           <option value="bez.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/bez.png">NAKŁADKĄ JEST SAMA RAMKA (koło lub kwadrat)</option>
@@ -101,20 +101,20 @@
    </div>
    
    <div class="control-group">  
-      <label>Powiększ zdjęcie główne:</label>  
+      <label>• Powiększ zdjęcie główne:</label>  
       <input type="range" id="mainImageScale" min="100" max="300" value="100">  
       <span>100%</span>  
    </div>  
 
    <div class="control-group">  
-      <label>Powiększ zdjęcie nakładki:</label>  
+      <label>• Powiększ zdjęcie nakładki:</label>  
       <input type="range" id="overlayImageScale" min="100" max="300" value="100">  
       <span>100%</span>  
    </div>  
   
    <div class="navigation-controls">  
       <div class="nav-control">  
-        <span>Kadruj zdjęcie główne</span>  
+        <span>• Kadruj zdjęcie główne</span>  
         <div class="nav-arrows" id="mainImageNav">  
            <button class="arrow up">↑</button>  
            <button class="arrow right">→</button>  
@@ -124,7 +124,7 @@
       </div>  
   
       <div class="nav-control">  
-        <span>Kadruj zdjęcie nakładki</span>  
+        <span>• Kadruj zdjęcie nakładki</span>  
         <div class="nav-arrows" id="overlayImageNav">  
            <button class="arrow up">↑</button>  
            <button class="arrow right">→</button>  
@@ -150,7 +150,7 @@
    </div>  
 
    <div class="control-group">
-      <label>Szablony:</label>
+      <label>• Szablony:</label>
       <select id="templateSelect" style="padding: 5px; min-width: 200px;">
           <option value="default">Możesz wskazać zapisany przez siebie szablon</option>
       </select>
