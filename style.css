@@ -172,16 +172,17 @@ body {
 }
 
 #shadow.skos {
-    width: 60%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    filter: blur(30px);
     position: absolute;
-    left: 60%;
-    top: 0;
-    transform: translateX(-100%);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    width: 80px;
+    height: 120%;
+    background-color: rgba(0, 0, 0, 0.5);
+    filter: blur(15px);
+    left: 56%; /* Przesuwamy cień bardziej w lewo */
+    top: -10%;
+    transform: translateX(-40%) rotate(8deg);
     z-index: 5;
+    pointer-events: none;
+    display: block;
 }
 
 /* Cień dla koła */
