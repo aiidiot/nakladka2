@@ -139,20 +139,12 @@ body {
     width: 50% !important;
     height: 100% !important;
     top: 0 !important;
-    left: 0 !important;
-    /* Odwrócony kształt - szerszy u góry */
+    right: 0 !important;
+    left: auto !important;
     -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-}
-
-/* Upewniamy się, że obraz wewnątrz również jest poprawnie przycinany */
-#overlayContainer.skos #overlayImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* Dodajemy te same wartości clip-path dla pewności */
-    -webkit-clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    position: absolute;
+    z-index: 6;
 }
   
 #overlayImage {  
@@ -218,15 +210,10 @@ input[type="number"] {
 
 #shadow.skos {
     position: absolute;
-    width: 100px; /* Wąski prostokąt */
-    height: 120%; /* Większy niż kontener żeby wychodził poza */
     background-color: rgba(0, 0, 0, 0.4);
     filter: blur(20px);
-    transform-origin: center center;
+    transform-origin: center;
     z-index: 5;
-    transform: rotate(15deg); /* Kąt pochylenia - dostosuj według potrzeb */
-    right: -50px; /* Pozycja za elementem - dostosuj */
-    top: -10%; /* Żeby wychodził poza kontener */
     pointer-events: none;
 }
 
