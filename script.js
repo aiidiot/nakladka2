@@ -41,15 +41,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateShadow() {
         const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth);
         
+        shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+        shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
+        shadow.className = overlayContainer.className;
+        
         if (overlayContainer.classList.contains('sklejka')) {
-            // Logika dla sklejki
-            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
-            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
-            shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
-            shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
             shadow.classList.add('sklejka');
             shadow.classList.remove('skos');
-        } 
+        } else if (overlayContainer.classList.contains('skos')) {
+            shadow.classList.add('skos');
+            shadow.classList.remove('sklejka');
+            
+            // Specjalna obsługa cienia dla skosu
+            shadow.style.width = '100px';
+            shadow.style.height = '120%';
+            shadow.style.left = '50%';
+            shadow.style.transform = 'translateX(-50%) rotate(15deg)';
+            shadow.style.top = '-10%';
+            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
+            shadow.style.filter = 'blur(20px)';
+        } else {
+            shadow.classList.remove('sklejka', 'skos');
+        }
         else if (overlayContainer.classList.contains('skos')) {
             // Pozycjonowanie cienia dla skosu - dokładnie na granicy podziału
             shadow.classList.add('skos');
