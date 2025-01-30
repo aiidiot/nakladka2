@@ -217,11 +217,11 @@ input[type="number"] {
     position: absolute;
     width: 60px;          /* Zmniejszona szerokość */
     height: 120%;
-    background-color: rgba(0, 0, 0, 0.77);  /* Zwiększona nieprzezroczystość */
+    background-color: rgba(0, 0, 0, 0.87);  /* Zwiększona nieprzezroczystość */
     filter: blur(15px);   /* Zmniejszone rozmycie */
     left: 58%;           /* Przesunięte bardziej w lewo */
     top: -10%;
-    transform: translateX(-50%) rotate(8deg); /* Zmieniony kąt */
+    transform: translateX(-60%) rotate(8deg); /* Zmieniony kąt */
     z-index: 5;
     pointer-events: none;
     display: block;
