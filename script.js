@@ -108,14 +108,12 @@ document.querySelectorAll('[data-shape]').forEach(btn => {
         overlayContainer.style.top = '0';
         overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
       } else if (shape === 'skos') {
-        console.log('Ustawianie skosu...');
-        overlayContainer.classList.add('skos');
-        shadow.style.borderRadius = '0';
-        overlayContainer.style.width = '50%';
+         overlayContainer.classList.add('sklejka');
+        overlayContainer.style.width = '90%';
         overlayContainer.style.height = '100%';
-        overlayContainer.style.top = '0';
         overlayContainer.style.left = '0';
-        overlayImage.style.transform = 'none';
+        overlayContainer.style.top = '0';
+        overlayContainer.style.transform = `rotate(${overlayRotation}deg)`;
         
         // Dodajemy kontrolne wyświetlanie
         console.log('Stan overlay po ustawieniu skosu:', {
