@@ -172,13 +172,13 @@ body {
 
 /* Cień dla skosu - uproszczony prostokąt */
 #shadow.skos {
-    width: 80px;
+    width: 30px;
     height: 120%;
-    background-color: rgba(0, 0, 0, 0.5);
-    filter: blur(15px);
-    left: 48%;
+    background-color: rgba(0, 0, 0, 0.7);
+    filter: blur(5px);
+    left: 88%;
     top: -10%;
-    transform: translateX(-50%) rotate(12deg);
+    transform: translateX(-40%) rotate(5deg);
 }
 
 /* Cień dla koła */
