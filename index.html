@@ -160,6 +160,10 @@
    <!-- HTML -->
 <div id="sidebar" style="position: fixed; top: 0; right: 0; width: 300px; height: 100%; background-color: #f4f4f4; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); display: none;">
     <span id="closeBtn" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+    
+    <!-- Logo -->
+    <img src="https://raw.githubusercontent.com/aiidiot/nakladka2/main/sklejka.png" alt="Sklejka 2.0" style="width: 300px; display: block; margin: 0 auto 20px auto;">
+    
     <h2>Nowe funkcje:</h2>
     <ul>
         <li>Ulepszone przeciąganie</li>
@@ -175,31 +179,6 @@
 </div>
 
 <button id="showSidebarBtn" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">Poznaj nowości</button>
-
-<!-- JavaScript -->
-<script>
-const sidebar = document.getElementById('sidebar');
-const showSidebarBtn = document.getElementById('showSidebarBtn');
-const closeBtn = document.getElementById('closeBtn');
-
-function openSidebar() {
-    sidebar.style.display = 'block';
-    showSidebarBtn.style.display = 'none';
-    // Automatyczne zamknięcie po 15 sekundach
-    setTimeout(closeSidebar, 15000);
-}
-
-function closeSidebar() {
-    sidebar.style.display = 'none';
-    showSidebarBtn.style.display = 'block';
-}
-
-// Event listenery
-showSidebarBtn.addEventListener('click', openSidebar);
-closeBtn.addEventListener('click', closeSidebar);
-
-// Pokaż sidebar przy starcie
-document.addEventListener('DOMContentLoaded', () => {
     setTimeout(openSidebar, 1000); // Pokaż po 1 sekundzie od załadowania strony
 });
 </script>
