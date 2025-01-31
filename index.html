@@ -8,22 +8,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>  
 </head>  
 <body>  
-   <div id="sidebar" style="position: fixed; top: 0; right: 0; width: 300px; height: 100%; background-color: #f4f4f4; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1);">
-    <span style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;" onclick="closeSidebar()">&times;</span>
-    <h2>Nowe funkcje:</h2>
-    <ul>
-        <li>Ulepszone przeciąganie</li>
-        <li>Wgrywanie zdjęć z linków (np. opublikowanych artykułów)</li>
-        <li>Możliwość zaznaczania kółeczkiem miejsc na mapie/twarzy</li>
-        <li>Możliwość zakrywania oczu paskiem</li>
-        <li>Możliwość pikselowania twarzy</li>
-        <li>Biblioteka nakładek (strzałki/kółka itp.)</li>
-       <br>
-               <li>Pamiętaj o szablonach - przyspieszają pracę</li>
-    </ul>
-    <a href="https://aiidiot.github.io/nakladka/SklejkaMaker2-instrukcja.webm" style="color: darkblue; font-weight: bold; text-decoration: none;">Instrukcje (3 minuty)</a>
-    <button onclick="openSidebar()" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">Poznaj nowości</button>
-</div>
+  
    <div class="controls">  
       <div class="control-group">  
         <button class="btn active" data-shape="circle">Koło</button>  
@@ -172,5 +157,51 @@
    </div>
    
    <script src="script.js"></script>  
+   <!-- HTML -->
+<div id="sidebar" style="position: fixed; top: 0; right: 0; width: 300px; height: 100%; background-color: #f4f4f4; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); display: none;">
+    <span id="closeBtn" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+    <h2>Nowe funkcje:</h2>
+    <ul>
+        <li>Ulepszone przeciąganie</li>
+        <li>Wgrywanie zdjęć z linków (np. opublikowanych artykułów)</li>
+        <li>Możliwość zaznaczania kółeczkiem miejsc na mapie/twarzy</li>
+        <li>Możliwość zakrywania oczu paskiem</li>
+        <li>Możliwość pikselowania twarzy</li>
+        <li>Biblioteka nakładek (strzałki/kółka itp.)</li>
+        <br>
+        <li>Pamiętaj o szablonach - przyspieszają pracę</li>
+    </ul>
+    <a href="https://aiidiot.github.io/nakladka/SklejkaMaker2-instrukcja.webm" style="color: darkblue; font-weight: bold; text-decoration: none;">Instrukcje (3 minuty)</a>
+</div>
+
+<button id="showSidebarBtn" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">Poznaj nowości</button>
+
+<!-- JavaScript -->
+<script>
+const sidebar = document.getElementById('sidebar');
+const showSidebarBtn = document.getElementById('showSidebarBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+function openSidebar() {
+    sidebar.style.display = 'block';
+    showSidebarBtn.style.display = 'none';
+    // Automatyczne zamknięcie po 15 sekundach
+    setTimeout(closeSidebar, 15000);
+}
+
+function closeSidebar() {
+    sidebar.style.display = 'none';
+    showSidebarBtn.style.display = 'block';
+}
+
+// Event listenery
+showSidebarBtn.addEventListener('click', openSidebar);
+closeBtn.addEventListener('click', closeSidebar);
+
+// Pokaż sidebar przy starcie
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(openSidebar, 1000); // Pokaż po 1 sekundzie od załadowania strony
+});
+</script>
 </body>  
 </html>
