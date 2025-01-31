@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shadow.classList.remove('sklejka');
             shadow.style.width = '8px';
             shadow.style.height = '120%';
-            shadow.style.left = '56%'; // Ustawiamy na środku
+            shadow.style.left = '55.5%'; // Ustawiamy na środku
             shadow.style.transform = 'translateX(-49%) rotate(8deg)'; // Centrujemy i obracamy
             shadow.style.top = '-10%';
             shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.92)';
