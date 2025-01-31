@@ -175,7 +175,7 @@ body {
     position: absolute;
     width: 80px;
     height: 120%;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(5, 5, 5, 0.95);
     filter: blur(15px);
     left: 16%; /* Przesuwamy cień bardziej w lewo */
     top: -10%;
