@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shadow.style.left = '55%'; // Ustawiamy na środku
             shadow.style.transform = 'translateX(-49%) rotate(8deg)'; // Centrujemy i obracamy
             shadow.style.top = '-10%';
-            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.12)';
+            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.82)';
             shadow.style.filter = 'blur(8px)';
         } 
         else {
