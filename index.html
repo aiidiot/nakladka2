@@ -13,7 +13,7 @@
 <body>  
 <!-- Dodaj na samej górze strony, zaraz po <body> -->
 <div class="top-notice">
-    <span>🆕 Dodano wyszukiwarkę zdjęć z importem do Sklejki</span>
+    <span>⭐⭐⭐ Dodano wyszukiwarkę zdjęć z importem do Sklejki⭐⭐⭐</span>
     <a href="#photoSearch" class="jump-button">Przewiń do wyszukiwarki ↓</a>
 </div>
 
@@ -44,7 +44,7 @@
       </div>  
 
       <div class="control-group">  
-    <label>• Obrót nakładki:</label>  
+    <label>🔴 Obrót nakładki:</label>  
     <input type="range" id="rotationAngle" min="0" max="360" value="0">  
     <input type="number" id="rotationAngleInput" value="0" min="0" max="360"> stopni
     <button class="btn" id="rotateLeft" title="Obróć w lewo o 22.5°">↺</button>
@@ -60,26 +60,26 @@
       <div class="control-group">  
         <label>  
            <input type="checkbox" id="shadowToggle">  
-           • Cień pod nakładką  
+           🔴 Cień pod nakładką  
         </label>  
       </div>  
    </div>  
   
    <div class="control-group">  
-      <label>• Zdjęcie główne:</label>  
+      <label>🔴 Zdjęcie główne:</label>  
       <input type="file" id="mainImageInput" accept="image/*">
       <input type="text" id="mainImageLink" placeholder="lub wklej link">  
       <button id="autoFitBtn" class="btn">Autodopasowanie zdjęcia</button>  
    </div>  
   
    <div class="control-group">  
-      <label>• Zdjęcie nakładki:</label>  
+      <label>🔴 Zdjęcie nakładki:</label>  
       <input type="file" id="overlayImageInput" accept="image/*">
       <input type="text" id="overlayImageLink" placeholder="lub wklej link">  
    </div>
 
    <div class="control-group">
-      <label>• Biblioteka nakładek:</label>
+      <label>🔴 Biblioteka nakładek:</label>
       <select id="overlayLibrary">
           <option value="custom">Wskazana wyżej</option>
           <option value="bez.png" data-thumbnail="https://raw.githubusercontent.com/aiidiot/nakladka/main/bez.png">NAKŁADKĄ JEST SAMA RAMKA (koło lub kwadrat)</option>
@@ -95,35 +95,35 @@
    </div>
    
    <div class="control-group">  
-      <label>• Powiększ zdjęcie główne:</label>  
+      <label>🔴 Powiększ zdjęcie główne:</label>  
       <input type="range" id="mainImageScale" min="100" max="300" value="100">  
       <span>100%</span>  
    </div>  
 
    <div class="control-group">  
-      <label>• Powiększ zdjęcie nakładki:</label>  
+      <label>🔴 Powiększ zdjęcie nakładki:</label>  
       <input type="range" id="overlayImageScale" min="100" max="300" value="100">  
       <span>100%</span>  
    </div>  
   
    <div class="navigation-controls">  
       <div class="nav-control">  
-        <span>• Kadruj zdjęcie główne</span>  
+        <span>🔴 Kadruj zdjęcie główne</span>  
         <div class="nav-arrows" id="mainImageNav">  
-           <button class="arrow up">↑</button>  
-           <button class="arrow right">→</button>  
-           <button class="arrow down">↓</button>  
-           <button class="arrow left">←</button>  
+           <button class="arrow up">🔼</button>  
+           <button class="arrow right">▶️</button>  
+           <button class="arrow down">🔽</button>  
+           <button class="arrow left">◀️</button>  
         </div>  
       </div>  
   
       <div class="nav-control">  
-        <span>• Kadruj zdjęcie nakładki</span>  
+        <span>🔴 Kadruj zdjęcie nakładki</span>  
         <div class="nav-arrows" id="overlayImageNav">  
-           <button class="arrow up">↑</button>  
-           <button class="arrow right">→</button>  
-           <button class="arrow down">↓</button>  
-           <button class="arrow left">←</button>  
+           <button class="arrow up">🔼</button>  
+           <button class="arrow right">▶️</button>  
+           <button class="arrow down">🔽</button>  
+           <button class="arrow left">◀️</button>  
         </div>  
       </div>  
    </div>  
@@ -144,16 +144,16 @@
    </div>  
 
    <div class="control-group">
-      <label>• Szablony:</label>
+      <label>🔴 Szablony:</label>
       <select id="templateSelect" style="padding: 5px; min-width: 200px;">
-          <option value="default">Możesz wskazać zapisany przez siebie szablon</option>
+          <option value="default">🔴 Możesz wskazać zapisany przez siebie szablon</option>
       </select>
       <button id="loadTemplateBtn" class="btn">Wczytaj</button>
       <button id="deleteTemplateBtn" class="btn">Usuń wybrany szablon</button>
    </div>
 
    <div class="control-group">
-      <label>Nazwa nowego szablonu:</label>
+      <label>🔴 Nazwa nowego szablonu:</label>
       <input type="text" id="newTemplateName" placeholder="Wpisz nazwę szablonu" style="padding: 5px; min-width: 200px;">
       <button id="saveTemplateBtn" class="btn">Zapisz bieżącą wielkość, pozycję i kolor nakładki jako szablon</button>
    </div>
