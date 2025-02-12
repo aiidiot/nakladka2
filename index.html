@@ -6,9 +6,17 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
    <title>SklejkaMaker 2.0</title>  
    <link rel="stylesheet" href="style.css">  
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script> 
+<script src="photo-search.js"></script>
+   
 </head>  
 <body>  
+<!-- Dodaj na samej górze strony, zaraz po <body> -->
+<div class="top-notice">
+    <span>🆕 Dodano wyszukiwarkę zdjęć z importem do Sklejki</span>
+    <a href="#photoSearch" class="jump-button">Przewiń do wyszukiwarki ↓</a>
+</div>
+
   
    <div class="controls">  
       <div class="control-group">  
@@ -153,29 +161,113 @@
    <div style="text-align: right; font-size: 12px; color: #666; margin-top: 12px; font-family: Arial, sans-serif;">
     SklejkaMaker by Robert VER 2.0
     <br>
-    <br> Wykonano bez znajomości programowania w 100 procentach przy pomocy: ChatGPT/Claude/Coopilot/Bito. Google Gemini nie chciało pomagać :)
     <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Faiidiot.github.io%2Fnakladka&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visits&edge_flat=false"/>
    </div>
    
    <script src="script.js"></script>  
   <!-- HTML -->
-<div id="sidebar" style="position: fixed; top: 0; right: 0; width: 300px; height: 100%; background-color: #f4f4f4; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); display: none;">
-    <span id="closeBtn" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
-   <img src="https://raw.githubusercontent.com/aiidiot/nakladka2/main/sklejka.png" alt="Skleja" style="width: 300px; display: block; margin: 0 auto 20px auto;">
-    
-    <h2>Nowe funkcje:</h2>
-    <ul>
-        <li>Ulepszone przeciąganie</li>
-        <li>Wgrywanie zdjęć z linków (np. opublikowanych artykułów)</li>
-        <li>Możliwość zaznaczania kółeczkiem miejsc na mapie/twarzy</li>
-        <li>Możliwość zakrywania oczu paskiem</li>
-        <li>Możliwość pikselowania twarzy</li>
-        <li>Biblioteka nakładek (strzałki/kółka itp.)</li>
-        <br>
-        <li>Twórz własne szablony - przyspieszają pracę</li>
-    </ul>
-    <a href="https://aiidiot.github.io/nakladka/SklejkaMaker2-instrukcja.webm" style="color: darkblue; font-weight: bold; text-decoration: none;">Instrukcje (3 minuty)</a>
+  
+  
+  <!-- Add this just before the closing </body> tag -->
+<!-- Zamień poprzedni kod wyszukiwarki na ten: -->
+<!-- Dodaj przed divem .photo-search-container -->
+<!-- Zaktualizowany nagłówek -->
+<div class="search-title">
+    <h2>Wyszukiwarka darmowych zdjęć</h2>
+    <div class="api-badges">
+        <span class="api-badge pexels">Pexels</span>
+        <span class="api-badge pixabay">Pixabay</span>
+    </div>
+    <p class="search-subtitle">Znajdź i zaimportuj zdjęcia do SklejkaMaker</p>
 </div>
+
+<style>
+.search-title {
+    text-align: center;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    border-radius: 8px 8px 0 0;
+    margin-bottom: -20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.search-title h2 {
+    color: #2d3748;
+    font-size: 28px;
+    margin: 0;
+    font-weight: 700;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.api-badges {
+    margin: 12px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.api-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.api-badge.pexels {
+    background: #05a081;
+}
+
+.api-badge.pixabay {
+    background: #2ec66d;
+}
+
+.search-subtitle {
+    color: #718096;
+    margin: 10px 0 0;
+    font-size: 15px;
+}
+</style>
+<div class="photo-search-container">
+    <div class="search-controls">
+        <div class="search-bar">
+            <input type="text" id="photoSearch" placeholder="Wyszukaj zdjęcia...">
+            <select id="sourceSelect">
+                <option value="all">Wszystkie źródła</option>
+                <option value="pexels">Tylko Pexels</option>
+                <option value="pixabay">Tylko Pixabay</option>
+            </select>
+            <button id="photoSearchBtn" class="btn btn-primary">Szukaj</button>
+        </div>
+        <div id="photoSearchLoader" class="loader">Wyszukiwanie...</div>
+        <div id="photoSearchError" class="error"></div>
+    </div>
+
+    <div class="photo-gallery">
+        <div id="photoSideLeft" class="side-photos"></div>
+        <div class="main-content">
+            <div id="photoMainDisplay" class="main-photo-container"></div>
+            <div class="photo-navigation">
+                <button id="prevPhoto" class="btn">←</button>
+                <button id="prevPage" class="btn">Poprzednia strona</button>
+                <span id="photoPagination"></span>
+                <button id="nextPage" class="btn">Następna strona</button>
+                <button id="nextPhoto" class="btn">→</button>
+            </div>
+            <div id="photoCredits" class="photo-credits"></div>
+            <div class="photo-actions">
+                <button id="useAsMain" class="btn btn-primary">Użyj jako zdjęcie główne</button>
+                <button id="useAsOverlay" class="btn btn-primary">Użyj jako nakładkę</button>
+                <button id="downloadPhoto" class="btn">Zapisz zdjęcie</button>
+            </div>
+        </div>
+        <div id="photoSideRight" class="side-photos"></div>
+		
+    </div>
+</div>
+    <br> Wykonano bez znajomości programowania w 100 procentach przy pomocy: ChatGPT/Claude/Coopilot/Bito. Google Gemini nie chciało pomagać :)
 
 <button id="showSidebarBtn" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">Poznaj nowości</button>
 
