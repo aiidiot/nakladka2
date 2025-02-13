@@ -85,7 +85,6 @@ body {
 #editorContainer {  
    width: 1024px;  
    height: 654px;  
-   border: 0.5px dashed rgba(0, 0, 0, 0.08);
    position: relative;  
    overflow: hidden;  
    background: #white;  
