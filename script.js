@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const shadow = document.getElementById('shadow');
     const mainImage = document.getElementById('mainImage');
     const overlayImage = document.getElementById('overlayImage');
+    const editorContainer = document.getElementById('editorContainer');
 
     // Elementy sterujące
     const mainImageInput = document.getElementById('mainImageInput');
@@ -28,18 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const borderWidthInput = document.getElementById('borderWidth');
     const borderWidthNumberInput = document.getElementById('borderWidthInput');
 
-    // Funkcja do tworzenia linii na środku dla SKLEJKA
+    // POPRAWIONA funkcja createCenterLine - linia na środku CAŁEGO kadru
     function createCenterLine() {
         let centerLine = document.getElementById('centerLine');
         if (!centerLine) {
             centerLine = document.createElement('div');
             centerLine.id = 'centerLine';
-            overlayContainer.appendChild(centerLine);
+            // Dodaj linię do głównego kontenera edytora, nie do nakładki
+            const editorContainer = document.getElementById('editorContainer');
+            editorContainer.appendChild(centerLine);
         }
         
         const borderWidth = parseInt(borderWidthInput.value) || 5;
         const borderColor = borderColorInput.value || '#000000';
         
+        // Stylowanie linii na środku CAŁEGO kadru
         centerLine.style.position = 'absolute';
         centerLine.style.left = '50%';
         centerLine.style.top = '0';
@@ -47,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         centerLine.style.height = '100%';
         centerLine.style.backgroundColor = borderColor;
         centerLine.style.transform = 'translateX(-50%)';
-        centerLine.style.zIndex = '10';
+        centerLine.style.zIndex = '10'; // Nad wszystkim
         centerLine.style.pointerEvents = 'none';
         
         return centerLine;
@@ -72,19 +76,24 @@ document.addEventListener('DOMContentLoaded', () => {
         shadowToggle.checked = true;
     }
 
-    // Poprawiona funkcja updateShadow dla SKLEJKA
+    // POPRAWIONA funkcja updateShadow dla cienia linii
     function updateShadow() {
         const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth) || parseInt(borderWidthInput.value) || 5;
         
         if (overlayContainer.classList.contains('sklejka')) {
+            // Dla SKLEJKA - cień od środkowej linii CAŁEGO kadru
             shadow.classList.add('sklejka');
             shadow.classList.remove('skos');
+            
+            // Pozycjonowanie cienia względem całego editorContainer
+            const editorContainer = document.getElementById('editorContainer');
+            const editorRect = editorContainer.getBoundingClientRect();
             
             shadow.style.width = borderWidth + 'px';
             shadow.style.height = '100%';
             shadow.style.left = '50%';
             shadow.style.top = '0';
-            shadow.style.transform = 'translateX(-45%)';
+            shadow.style.transform = 'translateX(-40%)'; // Przesunięcie cienia w lewo
             
             shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.66)';
             shadow.style.filter = 'blur(8px)';
@@ -101,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shadow.style.filter = 'blur(9px)';
         } 
         else {
+            // Standardowa logika dla pozostałych kształtów
             shadow.style.transform = 'none';
             shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
             shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
