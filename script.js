@@ -168,7 +168,7 @@ imgElement.style.right = '0'
     overlayContainer.addEventListener('mousedown', dragStart, false);
     document.addEventListener('mousemove', drag, false);
     document.addEventListener('mouseup', dragEnd, false);
-   // Obsługa zdjęć nowa czerwiec 2025
+// Obsługa zdjęć
 mainImageInput.addEventListener('change', function(e) {
     if (e.target.files && e.target.files[0]) {
         const reader = new FileReader();
