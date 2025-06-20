@@ -437,8 +437,7 @@ saveAsBtn.addEventListener('click', () => {
     const shadow = document.getElementById('shadow');
     const originalShadowDisplay = shadow.style.display;
     
-    // Temporarily hide the shadow
-    shadow.style.display = 'none';
+ 
 
     domtoimage.toBlob(document.getElementById('editorContainer'))
         .then(function(blob) {
