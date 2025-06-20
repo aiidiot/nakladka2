@@ -168,24 +168,26 @@ imgElement.style.right = '0'
     overlayContainer.addEventListener('mousedown', dragStart, false);
     document.addEventListener('mousemove', drag, false);
     document.addEventListener('mouseup', dragEnd, false);
-// Obsługa zdjęć
+// Obsługa zdjęć 2025 czerwiec
 mainImageInput.addEventListener('change', function(e) {
     if (e.target.files && e.target.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
             mainImage.src = e.target.result;
-            // Obliczanie i ustawianie domyślnej skali, aby wypełnić kadr
-            const containerWidth = mainImage.parentElement.offsetWidth;
-            const containerHeight = mainImage.parentElement.offsetHeight;
+            // Obliczanie i ustawianie domyślnej skali, aby proporcjonalnie wypełnić kadr
+            const container = mainImage.parentElement;
+            const containerWidth = container.offsetWidth;
+            const containerHeight = container.offsetHeight;
             const img = new Image();
             img.onload = function() {
                 const imgWidth = img.naturalWidth;
                 const imgHeight = img.naturalHeight;
-                const scaleWidth = containerWidth / imgWidth;
-                const scaleHeight = containerHeight / imgHeight;
-                const scale = Math.max(scaleWidth, scaleHeight); // Używamy większej skali, aby wypełnić kadr
+                const widthRatio = containerWidth / imgWidth;
+                const heightRatio = containerHeight / imgHeight;
+                const scale = Math.min(widthRatio, heightRatio); // Używamy mniejszej skali, aby zachować proporcje i wypełnić kadr
                 mainImageScale.value = Math.round(scale * 100);
                 mainImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                mainImage.style.objectFit = 'contain'; // Upewniamy się, że proporcje są zachowane
                 mainImageScale.nextElementSibling.textContent = `${Math.round(scale * 100)}%`;
             };
             img.src = e.target.result;
@@ -194,6 +196,7 @@ mainImageInput.addEventListener('change', function(e) {
         mainImageLink.value = '';
     }
 });
+
 
     overlayImageInput.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
