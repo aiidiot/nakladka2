@@ -391,19 +391,28 @@ imgElement.style.right = '0'
         }
     });
 
-    // Obsługa zapisywania
-    const saveAsBtn = document.getElementById('saveAsBtn');
-    saveAsBtn.addEventListener('click', () => {
-        domtoimage.toBlob(document.getElementById('editorContainer'))
-            .then(function(blob) {
-                const link = document.createElement('a');
-                link.download = 'edited-image.png';
-                link.href = URL.createObjectURL(blob);
-                link.click();
-                URL.revokeObjectURL(link.href);
-            });
-    });
+// Obsługa zapisywania NOWA czerwiec 2025
+const saveAsBtn = document.getElementById('saveAsBtn');
+saveAsBtn.addEventListener('click', () => {
+    const shadow = document.getElementById('shadow');
+    const originalShadowDisplay = shadow.style.display;
+    
+    // Temporarily hide the shadow
+    shadow.style.display = 'none';
 
+    domtoimage.toBlob(document.getElementById('editorContainer'))
+        .then(function(blob) {
+            const link = document.createElement('a');
+            link.download = 'edited-image.png';
+            link.href = URL.createObjectURL(blob);
+            link.click();
+            URL.revokeObjectURL(link.href);
+        })
+        .finally(() => {
+            // Restore the original shadow display state
+            shadow.style.display = originalShadowDisplay;
+        });
+});
     // Obsługa kopiowania do schowka
     const copyToClipboardBtn = document.getElementById('copyToClipboardBtn');
     copyToClipboardBtn.addEventListener('click', () => {
