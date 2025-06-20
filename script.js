@@ -25,6 +25,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorPresets = document.querySelectorAll('.color-btn');
     const shapeButtons = document.querySelectorAll('.btn[data-shape]');
     const shadowToggle = document.getElementById('shadowToggle');
+    const borderWidthInput = document.getElementById('borderWidth');
+    const borderWidthNumberInput = document.getElementById('borderWidthInput');
+
+    // Funkcja do tworzenia linii na środku dla SKLEJKA
+    function createCenterLine() {
+        let centerLine = document.getElementById('centerLine');
+        if (!centerLine) {
+            centerLine = document.createElement('div');
+            centerLine.id = 'centerLine';
+            overlayContainer.appendChild(centerLine);
+        }
+        
+        const borderWidth = parseInt(borderWidthInput.value) || 5;
+        const borderColor = borderColorInput.value || '#000000';
+        
+        centerLine.style.position = 'absolute';
+        centerLine.style.left = '50%';
+        centerLine.style.top = '0';
+        centerLine.style.width = borderWidth + 'px';
+        centerLine.style.height = '100%';
+        centerLine.style.backgroundColor = borderColor;
+        centerLine.style.transform = 'translateX(-50%)';
+        centerLine.style.zIndex = '10';
+        centerLine.style.pointerEvents = 'none';
+        
+        return centerLine;
+    }
+
+    // Funkcja do usuwania linii na środku
+    function removeCenterLine() {
+        const centerLine = document.getElementById('centerLine');
+        if (centerLine) {
+            centerLine.remove();
+        }
+    }
 
     // Funkcja inicjalizacji cienia - zawsze włączony
     function initializeShadow() {
@@ -37,54 +72,51 @@ document.addEventListener('DOMContentLoaded', () => {
         shadowToggle.checked = true;
     }
 
-    // Funkcja aktualizacji cienia
-   function updateShadowAlternative() {
-    const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth);
-    
-    if (overlayContainer.classList.contains('sklejka')) {
-        shadow.classList.add('sklejka');
-        shadow.classList.remove('skos');
+    // Poprawiona funkcja updateShadow dla SKLEJKA
+    function updateShadow() {
+        const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth) || parseInt(borderWidthInput.value) || 5;
         
-        // Pełny cień jak wcześniej
-        shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
-        shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
-        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
-        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
-        
-        // ALE przycinamy go żeby był widoczny tylko z lewej
-        const clipWidth = borderWidth + 10; // Szerokość widocznego cienia
-        shadow.style.clipPath = `polygon(0 0, ${clipWidth}px 0, ${clipWidth}px 100%, 0 100%)`;
-        
-        shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.66)';
-        shadow.style.filter = 'blur(10px)';
-    } 
-    else if (overlayContainer.classList.contains('skos')) {
-        shadow.classList.add('skos');
-        shadow.classList.remove('sklejka');
-        shadow.style.clipPath = 'none'; // Usuń clipping dla innych kształtów
-        shadow.style.width = '8px';
-        shadow.style.height = '100%';
-        shadow.style.left = '50.5%';
-        shadow.style.transform = 'translateX(-49%) rotate(8deg)';
-        shadow.style.top = '0%';
-        shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.92)';
-        shadow.style.filter = 'blur(9px)';
-    } 
-    else {
-        shadow.style.clipPath = 'none'; // Usuń clipping dla standardowych kształtów
-        shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
-        shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
-        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
-        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
-        shadow.classList.remove('sklejka', 'skos');
+        if (overlayContainer.classList.contains('sklejka')) {
+            shadow.classList.add('sklejka');
+            shadow.classList.remove('skos');
+            
+            shadow.style.width = borderWidth + 'px';
+            shadow.style.height = '100%';
+            shadow.style.left = '50%';
+            shadow.style.top = '0';
+            shadow.style.transform = 'translateX(-45%)';
+            
+            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.66)';
+            shadow.style.filter = 'blur(8px)';
+        } 
+        else if (overlayContainer.classList.contains('skos')) {
+            shadow.classList.add('skos');
+            shadow.classList.remove('sklejka');
+            shadow.style.width = '8px';
+            shadow.style.height = '100%';
+            shadow.style.left = '50.5%';
+            shadow.style.transform = 'translateX(-49%) rotate(8deg)';
+            shadow.style.top = '0%';
+            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.92)';
+            shadow.style.filter = 'blur(9px)';
+        } 
+        else {
+            shadow.style.transform = 'none';
+            shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+            shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+            shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+            shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
+            shadow.classList.remove('sklejka', 'skos');
+            shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.66)';
+            shadow.style.filter = 'blur(10px)';
+        }
+
+        overlayContainer.style.zIndex = '6';
+        shadow.style.zIndex = '5';
     }
 
-    overlayContainer.style.zIndex = '6';
-    shadow.style.zIndex = '5';
-}
     // Funkcja do ustawiania stylów obrazu nakładki
     function setupOverlayImage(imgElement) {
-        // Czekamy na załadowanie obrazu
         imgElement.onload = function() {
             const container = overlayContainer;
             const containerWidth = container.offsetWidth;
@@ -92,19 +124,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const imgWidth = this.naturalWidth;
             const imgHeight = this.naturalHeight;
 
-            // Obliczamy skalę, aby obraz zmieścił się w całości
             const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight);
             
-           imgElement.style.width = '100%';
-imgElement.style.height = '100%';
-imgElement.style.objectFit = 'contain'; // Zmiana z 'cover' na 'contain'
-imgElement.style.position = 'absolute';
-imgElement.style.top = '0';
-imgElement.style.left = '0';
-imgElement.style.bottom = '0';
-imgElement.style.right = '0'
+            imgElement.style.width = '100%';
+            imgElement.style.height = '100%';
+            imgElement.style.objectFit = 'contain';
+            imgElement.style.position = 'absolute';
+            imgElement.style.top = '0';
+            imgElement.style.left = '0';
+            imgElement.style.bottom = '0';
+            imgElement.style.right = '0';
             
-            // Ustawiamy skalę w kontrolce
             if (overlayImageScale) {
                 overlayImageScale.value = Math.round(scale * 100);
                 const event = new Event('input');
@@ -175,57 +205,27 @@ imgElement.style.right = '0'
     overlayContainer.addEventListener('mousedown', dragStart, false);
     document.addEventListener('mousemove', drag, false);
     document.addEventListener('mouseup', dragEnd, false);
-// Obsługa zdjęć 2025 czerwiec
-mainImageInput.addEventListener('change', function(e) {
-    if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            mainImage.src = e.target.result;
-            
-            // Resetuj wszystkie style transformacji
-            mainImage.style.transform = '';
-            
-            // Ustaw odpowiednie style dla wypełnienia kadru
-            mainImage.style.width = '100%';
-            mainImage.style.height = '100%';
-            mainImage.style.objectFit = 'cover'; // 'cover' wypełnia cały kadr, 'contain' zachowuje proporcje z pustymi miejscami
-            mainImage.style.objectPosition = 'center';
-            
-            // Opcjonalnie - jeśli kontener nie ma odpowiedniego pozycjonowania
-            const container = mainImage.parentElement;
-            if (getComputedStyle(container).position === 'static') {
-                container.style.position = 'relative';
-            }
-        };
-        reader.readAsDataURL(e.target.files[0]);
-        mainImageLink.value = '';
-    }
-});
 
-// Alternatywna wersja jeśli chcesz zachować proporcje ale wypełnić maksymalnie kadr:
-/*
-mainImageInput.addEventListener('change', function(e) {
-    if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            mainImage.src = e.target.result;
-            
-            // Usuń poprzednie transformacje
-            mainImage.style.transform = '';
-            
-            // Wypełnij kadr zachowując proporcje
-            mainImage.style.width = '100%';
-            mainImage.style.height = '100%';
-            mainImage.style.objectFit = 'contain'; // Cały obraz widoczny z możliwymi pustymi miejscami
-            mainImage.style.objectPosition = 'center';
-        };
-        reader.readAsDataURL(e.target.files[0]);
-        mainImageLink.value = '';
-    }
-});
-*/
-
-
+    // Obsługa zdjęć
+    mainImageInput.addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                mainImage.src = e.target.result;
+                mainImage.style.transform = '';
+                mainImage.style.width = '100%';
+                mainImage.style.height = '100%';
+                mainImage.style.objectFit = 'cover';
+                mainImage.style.objectPosition = 'center';
+                const container = mainImage.parentElement;
+                if (getComputedStyle(container).position === 'static') {
+                    container.style.position = 'relative';
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+            mainImageLink.value = '';
+        }
+    });
 
     overlayImageInput.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
@@ -242,14 +242,28 @@ mainImageInput.addEventListener('change', function(e) {
 
     // Obsługa kolorów
     borderColorInput.addEventListener('input', function() {
-        overlayContainer.style.borderColor = this.value;
+        if (overlayContainer.classList.contains('sklejka')) {
+            const centerLine = document.getElementById('centerLine');
+            if (centerLine) {
+                centerLine.style.backgroundColor = this.value;
+            }
+        } else {
+            overlayContainer.style.borderColor = this.value;
+        }
     });
 
     colorPresets.forEach(btn => {
         btn.addEventListener('click', function() {
             const color = this.dataset.color;
             borderColorInput.value = color;
-            overlayContainer.style.borderColor = color;
+            if (overlayContainer.classList.contains('sklejka')) {
+                const centerLine = document.getElementById('centerLine');
+                if (centerLine) {
+                    centerLine.style.backgroundColor = color;
+                }
+            } else {
+                overlayContainer.style.borderColor = color;
+            }
         });
     });
 
@@ -261,6 +275,17 @@ mainImageInput.addEventListener('change', function(e) {
             
             const shape = this.dataset.shape;
             overlayContainer.className = shape;
+            
+            if (shape === 'sklejka') {
+                overlayContainer.style.border = 'none';
+                createCenterLine();
+            } else {
+                const borderWidth = borderWidthInput.value || 5;
+                const borderColor = borderColorInput.value || '#000000';
+                overlayContainer.style.border = `${borderWidth}px solid ${borderColor}`;
+                removeCenterLine();
+            }
+            
             if (shadow.style.display === 'block') {
                 shadow.className = shape;
                 updateShadow();
@@ -269,11 +294,16 @@ mainImageInput.addEventListener('change', function(e) {
     });
 
     // Obsługa grubości ramki
-    const borderWidthInput = document.getElementById('borderWidth');
-    const borderWidthNumberInput = document.getElementById('borderWidthInput');
-
     function updateBorderWidth(value) {
-        overlayContainer.style.borderWidth = `${value}px`;
+        if (overlayContainer.classList.contains('sklejka')) {
+            const centerLine = document.getElementById('centerLine');
+            if (centerLine) {
+                centerLine.style.width = `${value}px`;
+            }
+        } else {
+            overlayContainer.style.borderWidth = `${value}px`;
+        }
+        
         borderWidthInput.value = value;
         borderWidthNumberInput.value = value;
         updateShadow();
@@ -286,6 +316,7 @@ mainImageInput.addEventListener('change', function(e) {
     borderWidthNumberInput.addEventListener('input', () => {
         updateBorderWidth(borderWidthNumberInput.value);
     });
+
     // Obsługa rozmiaru
     const overlaySizeInput = document.getElementById('overlaySize');
     const overlaySizeNumberInput = document.getElementById('overlaySizeInput');
@@ -315,16 +346,13 @@ mainImageInput.addEventListener('change', function(e) {
     const rotateRight = document.getElementById('rotateRight');
 
     function updateRotation(value) {
-        // Get current translation values if they exist
         const currentTransform = overlayContainer.style.transform || '';
         const translateMatch = currentTransform.match(/translate\(([-\d.]+px),\s*([-\d.]+px)\)/);
         const translateX = translateMatch ? translateMatch[1] : '0px';
         const translateY = translateMatch ? translateMatch[2] : '0px';
 
-        // Apply both rotation and translation to overlayContainer
         overlayContainer.style.transform = `translate(${translateX}, ${translateY}) rotate(${value}deg)`;
         
-        // Update shadow rotation
         if (shadow.style.display === 'block') {
             const shadowTranslateMatch = shadow.style.transform.match(/translate\(([-\d.]+px),\s*([-\d.]+px)\)/);
             const shadowTranslateX = shadowTranslateMatch ? shadowTranslateMatch[1] : '0px';
@@ -332,7 +360,6 @@ mainImageInput.addEventListener('change', function(e) {
             shadow.style.transform = `translate(${shadowTranslateX}, ${shadowTranslateY}) rotate(${value}deg)`;
         }
         
-        // Update input values
         rotationAngleInput.value = value;
         rotationAngleNumberInput.value = value;
     }
@@ -354,6 +381,7 @@ mainImageInput.addEventListener('change', function(e) {
 
     rotateLeft.addEventListener('click', () => rotateBy(-10));
     rotateRight.addEventListener('click', () => rotateBy(10));
+
     // Obsługa cienia
     shadowToggle.addEventListener('change', () => {
         if (shadowToggle.checked) {
@@ -421,6 +449,7 @@ mainImageInput.addEventListener('change', function(e) {
             overlayLibrary.value = 'custom';
         }
     });
+
     // Obsługa biblioteki nakładek
     overlayLibrary.addEventListener('change', function() {
         if (this.value !== 'custom') {
@@ -438,79 +467,73 @@ mainImageInput.addEventListener('change', function(e) {
         }
     });
 
-// Obsługa zapisywania - POPRAWKA dla overflow
-const saveAsBtn = document.getElementById('saveAsBtn');
-saveAsBtn.addEventListener('click', () => {
-    const editorContainer = document.getElementById('editorContainer');
-    
-    // Zapisz oryginalne style
-    const originalOverflow = editorContainer.style.overflow;
-    const originalPosition = editorContainer.style.position;
-    
-    // Ustaw style które ograniczą renderowanie
-    editorContainer.style.overflow = 'hidden';
-    editorContainer.style.position = 'relative';
-    
-    // Opcje dla domtoimage
-    const options = {
-        width: editorContainer.offsetWidth,
-        height: editorContainer.offsetHeight,
-        style: {
-            overflow: 'hidden',
-            position: 'relative'
-        }
-    };
-    
-    domtoimage.toBlob(editorContainer, options)
-        .then(function(blob) {
-            const link = document.createElement('a');
-            link.download = 'edited-image.png';
-            link.href = URL.createObjectURL(blob);
-            link.click();
-            URL.revokeObjectURL(link.href);
-        })
-        .finally(() => {
-            // Przywróć oryginalne style
-            editorContainer.style.overflow = originalOverflow;
-            editorContainer.style.position = originalPosition;
-        });
-});
-
-// Podobnie dla kopiowania:
-const copyToClipboardBtn = document.getElementById('copyToClipboardBtn');
-copyToClipboardBtn.addEventListener('click', () => {
-    const editorContainer = document.getElementById('editorContainer');
-    
-    const originalOverflow = editorContainer.style.overflow;
-    const originalPosition = editorContainer.style.position;
-    
-    editorContainer.style.overflow = 'hidden';
-    editorContainer.style.position = 'relative';
-    
-    const options = {
-        width: editorContainer.offsetWidth,
-        height: editorContainer.offsetHeight,
-        style: {
-            overflow: 'hidden',
-            position: 'relative'
-        }
-    };
-    
-    domtoimage.toBlob(editorContainer, options)
-        .then(function(blob) {
-            navigator.clipboard.write([
-                new ClipboardItem({
-                    'image/png': blob
-                })
-            ]).then(function() {
-                alert('Skopiowano do schowka!');
+    // Obsługa zapisywania
+    const saveAsBtn = document.getElementById('saveAsBtn');
+    saveAsBtn.addEventListener('click', () => {
+        const editorContainer = document.getElementById('editorContainer');
+        const originalOverflow = editorContainer.style.overflow;
+        const originalPosition = editorContainer.style.position;
+        
+        editorContainer.style.overflow = 'hidden';
+        editorContainer.style.position = 'relative';
+        
+        const options = {
+            width: editorContainer.offsetWidth,
+            height: editorContainer.offsetHeight,
+            style: {
+                overflow: 'hidden',
+                position: 'relative'
+            }
+        };
+        
+        domtoimage.toBlob(editorContainer, options)
+            .then(function(blob) {
+                const link = document.createElement('a');
+                link.download = 'edited-image.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+            })
+            .finally(() => {
+                editorContainer.style.overflow = originalOverflow;
+                editorContainer.style.position = originalPosition;
             });
-        })
-        .finally(() => {
-            editorContainer.style.overflow = originalOverflow;
-            editorContainer.style.position = originalPosition;
-        });
-});
+    });
+
+    // Obsługa kopiowania
+    const copyToClipboardBtn = document.getElementById('copyToClipboardBtn');
+    copyToClipboardBtn.addEventListener('click', () => {
+        const editorContainer = document.getElementById('editorContainer');
+        const originalOverflow = editorContainer.style.overflow;
+        const originalPosition = editorContainer.style.position;
+        
+        editorContainer.style.overflow = 'hidden';
+        editorContainer.style.position = 'relative';
+        
+        const options = {
+            width: editorContainer.offsetWidth,
+            height: editorContainer.offsetHeight,
+            style: {
+                overflow: 'hidden',
+                position: 'relative'
+            }
+        };
+        
+        domtoimage.toBlob(editorContainer, options)
+            .then(function(blob) {
+                navigator.clipboard.write([
+                    new ClipboardItem({
+                        'image/png': blob
+                    })
+                ]).then(function() {
+                    alert('Skopiowano do schowka!');
+                });
+            })
+            .finally(() => {
+                editorContainer.style.overflow = originalOverflow;
+                editorContainer.style.position = originalPosition;
+            });
+    });
 
     // Funkcje obsługi szablonów
     function loadSavedTemplates() {
@@ -542,39 +565,32 @@ copyToClipboardBtn.addEventListener('click', () => {
             overlayScale: overlayImageScale.value
         };
     }
-    // Funkcja aplikująca zapisane ustawienia
+
     function applySettings(settings) {
-        // Przywracanie kształtu
         overlayContainer.className = settings.shape;
         shadow.className = settings.shape;
 
-        // Przywracanie rozmiaru
         if (!settings.shape.includes('sklejka') && !settings.shape.includes('skos')) {
             overlayContainer.style.width = settings.overlaySize;
             overlayContainer.style.height = settings.overlaySize;
         }
 
-        // Przywracanie ramki
         overlayContainer.style.borderWidth = settings.borderWidth;
         overlayContainer.style.borderColor = settings.borderColor;
         borderColorInput.value = settings.borderColor;
         borderWidthInput.value = parseInt(settings.borderWidth);
         borderWidthNumberInput.value = parseInt(settings.borderWidth);
 
-        // Przywracanie pozycji
         xOffset = settings.position.x;
         yOffset = settings.position.y;
         setTranslate(xOffset, yOffset, overlayContainer);
 
-        // Przywracanie obrotu
         updateRotation(settings.rotation);
         
-        // Przywracanie skali
         overlayImageScale.value = settings.overlayScale;
         const scale = settings.overlayScale / 100;
         overlayImage.style.transform = `rotate(${settings.rotation}deg) scale(${scale})`;
 
-        // Aktualizacja cienia
         updateShadow();
     }
 
@@ -604,7 +620,6 @@ copyToClipboardBtn.addEventListener('click', () => {
         const settings = getCurrentSettings();
         localStorage.setItem('template_' + newTemplateName, JSON.stringify(settings));
         
-        // Dodawanie nowej opcji do selecta
         const select = document.getElementById('templateSelect');
         const exists = Array.from(select.options).some(option => option.value === newTemplateName);
         
