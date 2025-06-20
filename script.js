@@ -174,7 +174,6 @@ mainImageInput.addEventListener('change', function(e) {
         const reader = new FileReader();
         reader.onload = function(e) {
             mainImage.src = e.target.result;
-            // Obliczanie i ustawianie domyślnej skali, aby proporcjonalnie wypełnić kadr
             const container = mainImage.parentElement;
             const containerWidth = container.offsetWidth;
             const containerHeight = container.offsetHeight;
@@ -184,11 +183,9 @@ mainImageInput.addEventListener('change', function(e) {
                 const imgHeight = img.naturalHeight;
                 const widthRatio = containerWidth / imgWidth;
                 const heightRatio = containerHeight / imgHeight;
-                const scale = Math.min(widthRatio, heightRatio); // Używamy mniejszej skali, aby zachować proporcje i wypełnić kadr
-                mainImageScale.value = Math.round(scale * 100);
+                const scale = Math.min(widthRatio, heightRatio); // Proporcjonalne wypełnienie kadru
                 mainImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
-                mainImage.style.objectFit = 'contain'; // Upewniamy się, że proporcje są zachowane
-                mainImageScale.nextElementSibling.textContent = `${Math.round(scale * 100)}%`;
+                mainImage.style.objectFit = 'contain'; // Zachowanie proporcji
             };
             img.src = e.target.result;
         };
@@ -196,6 +193,7 @@ mainImageInput.addEventListener('change', function(e) {
         mainImageLink.value = '';
     }
 });
+
 
 
     overlayImageInput.addEventListener('change', function(e) {
