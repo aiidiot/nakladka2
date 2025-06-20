@@ -38,27 +38,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Funkcja aktualizacji cienia
-   function updateShadow() {
+   function updateShadowAlternative() {
     const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth);
     
     if (overlayContainer.classList.contains('sklejka')) {
-        // POPRAWKA dla SKLEJKA - cień tylko po lewej stronie
         shadow.classList.add('sklejka');
         shadow.classList.remove('skos');
         
-        // Cień ma mieć tylko szerokość ramki i być tylko po lewej
-        shadow.style.width = (borderWidth * 2) + 'px'; // Tylko szerokość ramki
-        shadow.style.height = overlayContainer.offsetHeight + 'px'; // Wysokość bez dodatkowej ramki
-        shadow.style.left = (overlayContainer.offsetLeft - borderWidth * 2) + 'px'; // Przesunięcie w lewo
-        shadow.style.top = overlayContainer.offsetTop + 'px'; // Bez przesunięcia w górę
+        // Pełny cień jak wcześniej
+        shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
+        shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
+        shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
+        shadow.style.top = (overlayContainer.offsetTop - borderWidth) + 'px';
         
-        // Dodatkowe style dla lepszego efektu
+        // ALE przycinamy go żeby był widoczny tylko z lewej
+        const clipWidth = borderWidth + 10; // Szerokość widocznego cienia
+        shadow.style.clipPath = `polygon(0 0, ${clipWidth}px 0, ${clipWidth}px 100%, 0 100%)`;
+        
         shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.66)';
         shadow.style.filter = 'blur(10px)';
     } 
     else if (overlayContainer.classList.contains('skos')) {
         shadow.classList.add('skos');
         shadow.classList.remove('sklejka');
+        shadow.style.clipPath = 'none'; // Usuń clipping dla innych kształtów
         shadow.style.width = '8px';
         shadow.style.height = '100%';
         shadow.style.left = '50.5%';
@@ -68,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shadow.style.filter = 'blur(9px)';
     } 
     else {
-        // Standardowa logika dla pozostałych kształtów
+        shadow.style.clipPath = 'none'; // Usuń clipping dla standardowych kształtów
         shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
         shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
         shadow.style.left = (overlayContainer.offsetLeft - borderWidth) + 'px';
