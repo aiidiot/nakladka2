@@ -168,17 +168,32 @@ imgElement.style.right = '0'
     overlayContainer.addEventListener('mousedown', dragStart, false);
     document.addEventListener('mousemove', drag, false);
     document.addEventListener('mouseup', dragEnd, false);
-    // Obsługa zdjęć
-    mainImageInput.addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                mainImage.src = e.target.result;
+   // Obsługa zdjęć nowa czerwiec 2025
+mainImageInput.addEventListener('change', function(e) {
+    if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            mainImage.src = e.target.result;
+            // Obliczanie i ustawianie domyślnej skali, aby wypełnić kadr
+            const containerWidth = mainImage.parentElement.offsetWidth;
+            const containerHeight = mainImage.parentElement.offsetHeight;
+            const img = new Image();
+            img.onload = function() {
+                const imgWidth = img.naturalWidth;
+                const imgHeight = img.naturalHeight;
+                const scaleWidth = containerWidth / imgWidth;
+                const scaleHeight = containerHeight / imgHeight;
+                const scale = Math.max(scaleWidth, scaleHeight); // Używamy większej skali, aby wypełnić kadr
+                mainImageScale.value = Math.round(scale * 100);
+                mainImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                mainImageScale.nextElementSibling.textContent = `${Math.round(scale * 100)}%`;
             };
-            reader.readAsDataURL(e.target.files[0]);
-            mainImageLink.value = '';
-        }
-    });
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+        mainImageLink.value = '';
+    }
+});
 
     overlayImageInput.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
