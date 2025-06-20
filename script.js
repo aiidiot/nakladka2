@@ -431,15 +431,30 @@ mainImageInput.addEventListener('change', function(e) {
         }
     });
 
-// Obsługa zapisywania NOWA czerwiec 2025
+// Obsługa zapisywania - POPRAWKA dla overflow
 const saveAsBtn = document.getElementById('saveAsBtn');
 saveAsBtn.addEventListener('click', () => {
-    const shadow = document.getElementById('shadow');
-    const originalShadowDisplay = shadow.style.display;
+    const editorContainer = document.getElementById('editorContainer');
     
- 
-
-    domtoimage.toBlob(document.getElementById('editorContainer'))
+    // Zapisz oryginalne style
+    const originalOverflow = editorContainer.style.overflow;
+    const originalPosition = editorContainer.style.position;
+    
+    // Ustaw style które ograniczą renderowanie
+    editorContainer.style.overflow = 'hidden';
+    editorContainer.style.position = 'relative';
+    
+    // Opcje dla domtoimage
+    const options = {
+        width: editorContainer.offsetWidth,
+        height: editorContainer.offsetHeight,
+        style: {
+            overflow: 'hidden',
+            position: 'relative'
+        }
+    };
+    
+    domtoimage.toBlob(editorContainer, options)
         .then(function(blob) {
             const link = document.createElement('a');
             link.download = 'edited-image.png';
@@ -448,24 +463,47 @@ saveAsBtn.addEventListener('click', () => {
             URL.revokeObjectURL(link.href);
         })
         .finally(() => {
-            // Restore the original shadow display state
-            shadow.style.display = originalShadowDisplay;
+            // Przywróć oryginalne style
+            editorContainer.style.overflow = originalOverflow;
+            editorContainer.style.position = originalPosition;
         });
 });
-    // Obsługa kopiowania do schowka
-    const copyToClipboardBtn = document.getElementById('copyToClipboardBtn');
-    copyToClipboardBtn.addEventListener('click', () => {
-        domtoimage.toBlob(document.getElementById('editorContainer'))
-            .then(function(blob) {
-                navigator.clipboard.write([
-                    new ClipboardItem({
-                        'image/png': blob
-                    })
-                ]).then(function() {
-                    alert('Skopiowano do schowka!');
-                });
+
+// Podobnie dla kopiowania:
+const copyToClipboardBtn = document.getElementById('copyToClipboardBtn');
+copyToClipboardBtn.addEventListener('click', () => {
+    const editorContainer = document.getElementById('editorContainer');
+    
+    const originalOverflow = editorContainer.style.overflow;
+    const originalPosition = editorContainer.style.position;
+    
+    editorContainer.style.overflow = 'hidden';
+    editorContainer.style.position = 'relative';
+    
+    const options = {
+        width: editorContainer.offsetWidth,
+        height: editorContainer.offsetHeight,
+        style: {
+            overflow: 'hidden',
+            position: 'relative'
+        }
+    };
+    
+    domtoimage.toBlob(editorContainer, options)
+        .then(function(blob) {
+            navigator.clipboard.write([
+                new ClipboardItem({
+                    'image/png': blob
+                })
+            ]).then(function() {
+                alert('Skopiowano do schowka!');
             });
-    });
+        })
+        .finally(() => {
+            editorContainer.style.overflow = originalOverflow;
+            editorContainer.style.position = originalPosition;
+        });
+});
 
     // Funkcje obsługi szablonów
     function loadSavedTemplates() {
