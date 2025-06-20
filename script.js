@@ -174,25 +174,49 @@ mainImageInput.addEventListener('change', function(e) {
         const reader = new FileReader();
         reader.onload = function(e) {
             mainImage.src = e.target.result;
+            
+            // Resetuj wszystkie style transformacji
+            mainImage.style.transform = '';
+            
+            // Ustaw odpowiednie style dla wypełnienia kadru
+            mainImage.style.width = '100%';
+            mainImage.style.height = '100%';
+            mainImage.style.objectFit = 'cover'; // 'cover' wypełnia cały kadr, 'contain' zachowuje proporcje z pustymi miejscami
+            mainImage.style.objectPosition = 'center';
+            
+            // Opcjonalnie - jeśli kontener nie ma odpowiedniego pozycjonowania
             const container = mainImage.parentElement;
-            const containerWidth = container.offsetWidth;
-            const containerHeight = container.offsetHeight;
-            const img = new Image();
-            img.onload = function() {
-                const imgWidth = img.naturalWidth;
-                const imgHeight = img.naturalHeight;
-                const widthRatio = containerWidth / imgWidth;
-                const heightRatio = containerHeight / imgHeight;
-                const scale = Math.min(widthRatio, heightRatio); // Proporcjonalne wypełnienie kadru
-                mainImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
-                mainImage.style.objectFit = 'contain'; // Zachowanie proporcji
-            };
-            img.src = e.target.result;
+            if (getComputedStyle(container).position === 'static') {
+                container.style.position = 'relative';
+            }
         };
         reader.readAsDataURL(e.target.files[0]);
         mainImageLink.value = '';
     }
 });
+
+// Alternatywna wersja jeśli chcesz zachować proporcje ale wypełnić maksymalnie kadr:
+/*
+mainImageInput.addEventListener('change', function(e) {
+    if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            mainImage.src = e.target.result;
+            
+            // Usuń poprzednie transformacje
+            mainImage.style.transform = '';
+            
+            // Wypełnij kadr zachowując proporcje
+            mainImage.style.width = '100%';
+            mainImage.style.height = '100%';
+            mainImage.style.objectFit = 'contain'; // Cały obraz widoczny z możliwymi pustymi miejscami
+            mainImage.style.objectPosition = 'center';
+        };
+        reader.readAsDataURL(e.target.files[0]);
+        mainImageLink.value = '';
+    }
+});
+*/
 
 
 
