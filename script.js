@@ -29,35 +29,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const borderWidthInput = document.getElementById('borderWidth');
     const borderWidthNumberInput = document.getElementById('borderWidthInput');
 
-    // POPRAWIONA funkcja createCenterLine - linia na środku CAŁEGO kadru
+    // POPRAWIONA funkcja createCenterLine - obsługa obu typów linii
     function createCenterLine() {
-        let centerLine = document.getElementById('centerLine');
-        if (!centerLine) {
-            centerLine = document.createElement('div');
-            centerLine.id = 'centerLine';
-            // Dodaj linię do głównego kontenera edytora, nie do nakładki
-            const editorContainer = document.getElementById('editorContainer');
-            editorContainer.appendChild(centerLine);
-        }
+        // Usuń poprzednią linię
+        removeCenterLine();
         
         const borderWidth = parseInt(borderWidthInput.value) || 5;
         const borderColor = borderColorInput.value || '#000000';
+        const editorContainer = document.getElementById('editorContainer');
         
-        // Stylowanie linii na środku CAŁEGO kadru
-        centerLine.style.position = 'absolute';
-        centerLine.style.left = '50%';
-        centerLine.style.top = '0';
-        centerLine.style.width = borderWidth + 'px';
-        centerLine.style.height = '100%';
-        centerLine.style.backgroundColor = borderColor;
-        centerLine.style.transform = 'translateX(-50%)';
-        centerLine.style.zIndex = '10'; // Nad wszystkim
-        centerLine.style.pointerEvents = 'none';
-        
-        return centerLine;
+        if (overlayContainer.classList.contains('sklejka')) {
+            // LINIA PIONOWA dla SKLEJKA
+            let centerLine = document.createElement('div');
+            centerLine.id = 'centerLine';
+            editorContainer.appendChild(centerLine);
+            
+            centerLine.style.position = 'absolute';
+            centerLine.style.left = '50%';
+            centerLine.style.top = '0';
+            centerLine.style.width = borderWidth + 'px';
+            centerLine.style.height = '100%';
+            centerLine.style.backgroundColor = borderColor;
+            centerLine.style.transform = 'translateX(-50%)';
+            centerLine.style.zIndex = '10';
+            centerLine.style.pointerEvents = 'none';
+            
+        } else if (overlayContainer.classList.contains('skos')) {
+            // LINIA SKOŚNA dla SKOS
+            let centerLine = document.createElement('div');
+            centerLine.id = 'centerLine';
+            editorContainer.appendChild(centerLine);
+            
+            const containerHeight = editorContainer.offsetHeight;
+            // Oblicz długość przekątnej dla skośnej linii
+            const diagonalLength = Math.sqrt(containerHeight * containerHeight + (containerHeight * 0.3) * (containerHeight * 0.3));
+            
+            centerLine.style.position = 'absolute';
+            centerLine.style.left = '50%';
+            centerLine.style.top = '0';
+            centerLine.style.width = borderWidth + 'px';
+            centerLine.style.height = diagonalLength + 'px';
+            centerLine.style.backgroundColor = borderColor;
+            centerLine.style.transformOrigin = 'top center';
+            centerLine.style.transform = 'translateX(-50%) rotate(8deg)'; // Taki sam kąt jak kadr
+            centerLine.style.zIndex = '10';
+            centerLine.style.pointerEvents = 'none';
+        }
     }
 
-    // Funkcja do usuwania linii na środku
+    // Poprawiona funkcja removeCenterLine
     function removeCenterLine() {
         const centerLine = document.getElementById('centerLine');
         if (centerLine) {
@@ -81,24 +101,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const borderWidth = parseInt(getComputedStyle(overlayContainer).borderWidth) || parseInt(borderWidthInput.value) || 5;
         
         if (overlayContainer.classList.contains('sklejka')) {
-            // Dla SKLEJKA - cień od środkowej linii CAŁEGO kadru
             shadow.classList.add('sklejka');
             shadow.classList.remove('skos');
-            
-            // Pozycjonowanie cienia względem całego editorContainer
-            const editorContainer = document.getElementById('editorContainer');
-            const editorRect = editorContainer.getBoundingClientRect();
-            
             shadow.style.width = borderWidth + 'px';
             shadow.style.height = '100%';
             shadow.style.left = '50%';
             shadow.style.top = '0';
-            shadow.style.transform = 'translateX(-40%)'; // Przesunięcie cienia w lewo
-            
+            shadow.style.transform = 'translateX(-40%)';
             shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.66)';
             shadow.style.filter = 'blur(8px)';
-        } 
-        else if (overlayContainer.classList.contains('skos')) {
+        } else if (overlayContainer.classList.contains('skos')) {
             shadow.classList.add('skos');
             shadow.classList.remove('sklejka');
             shadow.style.width = '8px';
@@ -108,9 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shadow.style.top = '0%';
             shadow.style.backgroundColor = 'rgba(0, 0, 0, 0.92)';
             shadow.style.filter = 'blur(9px)';
-        } 
-        else {
-            // Standardowa logika dla pozostałych kształtów
+        } else {
             shadow.style.transform = 'none';
             shadow.style.width = (overlayContainer.offsetWidth + borderWidth * 2) + 'px';
             shadow.style.height = (overlayContainer.offsetHeight + borderWidth * 2) + 'px';
@@ -250,9 +260,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Obsługa kolorów
+    // POPRAWIONA obsługa kolorów
     borderColorInput.addEventListener('input', function() {
-        if (overlayContainer.classList.contains('sklejka')) {
+        if (overlayContainer.classList.contains('sklejka') || overlayContainer.classList.contains('skos')) {
             const centerLine = document.getElementById('centerLine');
             if (centerLine) {
                 centerLine.style.backgroundColor = this.value;
@@ -266,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', function() {
             const color = this.dataset.color;
             borderColorInput.value = color;
-            if (overlayContainer.classList.contains('sklejka')) {
+            if (overlayContainer.classList.contains('sklejka') || overlayContainer.classList.contains('skos')) {
                 const centerLine = document.getElementById('centerLine');
                 if (centerLine) {
                     centerLine.style.backgroundColor = color;
@@ -277,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Obsługa kształtów
+    // POPRAWIONA obsługa kształtów
     shapeButtons.forEach(button => {
         button.addEventListener('click', function() {
             shapeButtons.forEach(btn => btn.classList.remove('active'));
@@ -286,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const shape = this.dataset.shape;
             overlayContainer.className = shape;
             
-            if (shape === 'sklejka') {
+            if (shape === 'sklejka' || shape === 'skos') {
                 overlayContainer.style.border = 'none';
                 createCenterLine();
             } else {
@@ -303,9 +313,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Obsługa grubości ramki
+    // POPRAWIONA obsługa grubości ramki
     function updateBorderWidth(value) {
-        if (overlayContainer.classList.contains('sklejka')) {
+        if (overlayContainer.classList.contains('sklejka') || overlayContainer.classList.contains('skos')) {
             const centerLine = document.getElementById('centerLine');
             if (centerLine) {
                 centerLine.style.width = `${value}px`;
