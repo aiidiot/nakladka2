@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const diagonalLength = Math.sqrt(containerHeight * containerHeight + (containerHeight * 0.3) * (containerHeight * 0.3));
             
             centerLine.style.position = 'absolute';
-centerLine.style.left = 'calc(50% + 46px)'; // przesuwa o 40px w prawo
+centerLine.style.left = 'calc(50% + 50px)'; // przesuwa o 40px w prawo
             centerLine.style.top = '0';
             centerLine.style.width = borderWidth + 'px';
             centerLine.style.height = diagonalLength + 'px';
